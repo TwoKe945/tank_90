@@ -52,7 +52,11 @@ public class GridPlaygroundComponent extends Component {
     }
 
     public void setGrid(int[][] grid) {
-        this.grid = grid;
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[y].length; x++) {
+                this.grid[y][x] = grid[y][x];
+            }
+        }
     }
 
     @Override
