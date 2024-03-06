@@ -56,10 +56,10 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
 
 
 
-    public void update(float dt) {
+    public  void update(float dt) {
         doUpdate(dt);
-        for (GameEntity entity : entities) {
-            entity.update(dt);
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).update(dt);
         }
         doUpdateEntityAfter(dt);
     }
