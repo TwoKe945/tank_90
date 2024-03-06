@@ -11,12 +11,17 @@ public class TextButtonComponent extends Component{
 
     private Color color;
 
-    public void setColor(Color color) {
+    private int x;
+    private int y;
+
+    public TextButtonComponent setColor(Color color) {
         this.color = color;
+        return this;
     }
 
-    public void setFont(Font font) {
+    public TextButtonComponent setFont(Font font) {
         this.font = font;
+        return this;
     }
 
     public TextButtonComponent(String text) {
@@ -27,8 +32,9 @@ public class TextButtonComponent extends Component{
         return text;
     }
 
-    public void setText(String text) {
+    public TextButtonComponent setText(String text) {
         this.text = text;
+        return this;
     }
 
     @Override
@@ -44,7 +50,16 @@ public class TextButtonComponent extends Component{
         } else {
            fm = g.getFontMetrics();
         }
-        g.drawString(text,transform.getPosition().x + (transform.getSize().width-(int)fm.getStringBounds(text, g).getWidth())/2,
-                transform.getPosition().y + (transform.getSize().height - fm.getHeight()) / 2 + fm.getAscent());
+        this.x = transform.getPosition().x + (transform.getSize().width-(int)fm.getStringBounds(text, g).getWidth())/2;
+        this.y = transform.getPosition().y + (transform.getSize().height - fm.getHeight()) / 2 + fm.getAscent();
+        g.drawString(text, x, y);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

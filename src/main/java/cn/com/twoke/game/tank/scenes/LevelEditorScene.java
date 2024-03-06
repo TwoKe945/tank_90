@@ -73,7 +73,6 @@ public class LevelEditorScene extends Scene {
         }));
         addToScene(showGridLines);
 
-
         GameEntity startGameButton = new GameEntity("startGame", new Transform(
                 new Point(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
                         Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 7 + 40 * 6 + 20),
@@ -106,7 +105,6 @@ public class LevelEditorScene extends Scene {
         backMenuButton.add(new RetangleComponent(Color.WHITE, Color.BLACK));
         backMenuButton.add(new TextButtonComponent("返回菜单"));
         backMenuButton.add(new MouseMotionComponent().onClick(MouseEvent.BUTTON1, (e, entity) -> {
-//            component.resetGrid();
             game.changeScene(0);
         }));
         addToScene(backMenuButton);

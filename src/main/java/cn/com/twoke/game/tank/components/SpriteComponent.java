@@ -1,0 +1,39 @@
+package cn.com.twoke.game.tank.components;
+
+
+import cn.com.twoke.game.tank.entity.GameEntity;
+import cn.com.twoke.game.tank.util.AssetPool;
+import cn.com.twoke.game.tank.util.ImageUtil;
+import cn.com.twoke.game.tank.util.ResourceLoader;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class SpriteComponent extends Component {
+
+    public BufferedImage spriteImage;
+
+    public SpriteComponent(String spriteImagePath) {
+        super();
+        spriteImage = ResourceLoader.loadImage(spriteImagePath);
+    }
+
+    @Override
+    public void setEntity(GameEntity entity) {
+        super.setEntity(entity);
+        entity.getTransform().setSize(spriteImage.getWidth(), spriteImage.getHeight());
+    }
+
+    @Override
+    public void render(Graphics g) {
+        g.drawImage(ImageUtil.rotateImage(spriteImage, entity.getTransform().getRotate()), entity.getTransform().getPosition().x,
+                entity.getTransform().getPosition().y,
+                entity.getTransform().getSize().width,
+                entity.getTransform().getSize().height, null);
+    }
+
+    @Override
+    public void update(float dt) {
+
+    }
+}

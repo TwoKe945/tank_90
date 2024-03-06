@@ -9,10 +9,12 @@ public class Transform {
 
     private Point position;
     private Dimension size;
+    private int rotate;
 
     public Transform(Point position, Dimension size) {
         this.position = position;
         this.size = size;
+        this.rotate = 0;
     }
 
     public Point getPosition() {
@@ -22,6 +24,14 @@ public class Transform {
     public void setPosition(Point position) {
         if (Objects.isNull(position)) return;
         setPosition(position.x, position.y);
+    }
+
+    public int getRotate() {
+        return rotate;
+    }
+
+    public void setRotate(int rotate) {
+        this.rotate = rotate;
     }
 
     public void setPosition(int x, int y) {

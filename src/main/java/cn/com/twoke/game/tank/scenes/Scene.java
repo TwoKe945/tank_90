@@ -5,18 +5,17 @@ import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.main.TankGame;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Scene implements MouseListener, MouseMotionListener {
+public abstract class Scene implements MouseListener, MouseMotionListener, KeyListener {
 
     private final List<GameEntity> entities;
     private List<MouseListener> mouseListeners;
     private List<MouseMotionListener> mouseMotionListeners;
+    private List<KeyListener> keyListeners;
 
     protected TankGame game;
 
@@ -24,10 +23,11 @@ public abstract class Scene implements MouseListener, MouseMotionListener {
         this.game = game;
     }
 
-    public Scene() {
+    protected Scene() {
         this.entities = new ArrayList<>();
         this.mouseMotionListeners = new ArrayList<>();
         this.mouseListeners = new ArrayList<>();
+        this.keyListeners = new ArrayList<>();
     }
 
     public void addToScene(GameEntity entity) {
@@ -36,8 +36,12 @@ public abstract class Scene implements MouseListener, MouseMotionListener {
         for (Component component : entity.getAllComponents()) {
             if (MouseListener.class.isAssignableFrom(component.getClass())) {
                 this.mouseListeners.add((MouseListener) component);
-            } if (MouseMotionListener.class.isAssignableFrom(component.getClass())) {
+            }
+            if (MouseMotionListener.class.isAssignableFrom(component.getClass())) {
                 this.mouseMotionListeners.add((MouseMotionListener) component);
+            }
+            if (KeyListener.class.isAssignableFrom(component.getClass())) {
+                this.keyListeners.add((KeyListener) component);
             }
         }
     }
@@ -115,6 +119,26 @@ public abstract class Scene implements MouseListener, MouseMotionListener {
     public void mouseMoved(MouseEvent e) {
         for (MouseMotionListener mouseListener : this.mouseMotionListeners) {
             mouseListener.mouseMoved(e);
+        }
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        for (KeyListener keyListener : keyListeners) {
+            keyListener.keyPressed(e);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        for (KeyListener keyListener : keyListeners) {
+            keyListener.keyReleased(e);
         }
     }
 }
