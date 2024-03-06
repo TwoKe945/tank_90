@@ -2,16 +2,15 @@ package cn.com.twoke.game.tank.main;
 
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.scenes.*;
+import cn.com.twoke.game.tank.scenes.WelcomeScene;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 /**
  * 坦克游戏
  */
-public class TankGame implements  Runnable, MouseMotionListener, MouseListener {
+public class TankGame implements  Runnable, MouseMotionListener, MouseListener, KeyListener {
 
     private final GameWindow window;
     private final GamePanel panel;
@@ -25,6 +24,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener {
         panel.requestFocus();
         this.panel.addMouseListener(this);
         this.panel.addMouseMotionListener(this);
+        this.panel.addKeyListener(this);
         startRenderLoop();
     }
 
@@ -129,5 +129,20 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener {
     @Override
     public void mouseMoved(MouseEvent e) {
         currentScene.mouseMoved(e);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        currentScene.keyTyped(e);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        currentScene.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        currentScene.keyReleased(e);
     }
 }
