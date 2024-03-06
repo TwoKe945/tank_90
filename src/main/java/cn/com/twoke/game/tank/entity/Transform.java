@@ -7,21 +7,21 @@ import java.util.Objects;
 
 public class Transform {
 
-    private Point position;
-    private Dimension size;
+    private final Vec2f position;
+    private final Dimension size;
     private int rotate;
 
-    public Transform(Point position, Dimension size) {
+    public Transform(Vec2f position, Dimension size) {
         this.position = position;
         this.size = size;
         this.rotate = 0;
     }
 
-    public Point getPosition() {
+    public Vec2f getPosition() {
         return position;
     }
 
-    public void setPosition(Point position) {
+    public void setPosition(Vec2f position) {
         if (Objects.isNull(position)) return;
         setPosition(position.x, position.y);
     }
@@ -34,7 +34,7 @@ public class Transform {
         this.rotate = rotate;
     }
 
-    public void setPosition(int x, int y) {
+    public void setPosition(float x, float y) {
         this.position.x = x;
         this.position.y = y;
     }

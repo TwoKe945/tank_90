@@ -1,5 +1,6 @@
 package cn.com.twoke.game.tank.main;
 
+import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.util.ResourceLoader;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class GameWindow {
         frame.setLocationRelativeTo(null);
 //		设置窗口显示
         frame.setVisible(true);
-        frame.setIconImage(ResourceLoader.loadImage("/icon.png"));
+        frame.setIconImage(ResourceLoader.loadImage(Constant.TEXTURE_UI_ICON));
     }
 
     public JFrame getFrame() {

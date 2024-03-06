@@ -1,5 +1,6 @@
 package cn.com.twoke.game.tank.components;
 
+import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.util.AssetPool;
@@ -50,6 +51,10 @@ public class GridPlaygroundComponent extends Component {
         editButtonComponent.drawGrid(this.grid, e, this.grid.length - 2, 12);
     }
 
+    public void setGrid(int[][] grid) {
+        this.grid = grid;
+    }
+
     @Override
     public void render(Graphics g) {
         renderBackground(g);
@@ -68,7 +73,7 @@ public class GridPlaygroundComponent extends Component {
                             Settings.TILE_WIDTH,
                             Settings.TILE_HEIGHT, null);
                 } else {
-                    g.drawImage(ResourceLoader.loadImage("/flag.png"),
+                    g.drawImage(ResourceLoader.loadImage(Constant.TEXTURE_MAP_FLAG),
                             Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
                             Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
                             Settings.TILE_WIDTH * 2,
@@ -130,5 +135,9 @@ public class GridPlaygroundComponent extends Component {
             Arrays.fill(grid[y], 0);
         }
         initGrid();
+    }
+
+    public int[][] getGridData() {
+        return grid;
     }
 }

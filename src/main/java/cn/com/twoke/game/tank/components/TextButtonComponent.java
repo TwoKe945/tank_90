@@ -50,8 +50,8 @@ public class TextButtonComponent extends Component{
         } else {
            fm = g.getFontMetrics();
         }
-        this.x = transform.getPosition().x + (transform.getSize().width-(int)fm.getStringBounds(text, g).getWidth())/2;
-        this.y = transform.getPosition().y + (transform.getSize().height - fm.getHeight()) / 2 + fm.getAscent();
+        this.x = (int)transform.getPosition().x + (transform.getSize().width-(int)fm.getStringBounds(text, g).getWidth())/2;
+        this.y = (int)transform.getPosition().y + (transform.getSize().height - fm.getHeight()) / 2 + fm.getAscent();
         g.drawString(text, x, y);
     }
 

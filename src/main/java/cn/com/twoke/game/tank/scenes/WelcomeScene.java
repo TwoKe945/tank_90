@@ -3,11 +3,13 @@ package cn.com.twoke.game.tank.scenes;
 import cn.com.twoke.game.tank.components.KeyCodeComponent;
 import cn.com.twoke.game.tank.components.SpriteComponent;
 import cn.com.twoke.game.tank.components.TextButtonComponent;
+import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import cn.com.twoke.game.tank.util.AssetPool;
 import cn.com.twoke.game.tank.util.ResourceLoader;
+import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,12 +28,12 @@ public class WelcomeScene extends Scene {
     private int selectIndex = 0;
 
     private WelcomeScene() {
-        logoImage = ResourceLoader.loadImage("/logo.png");
-        loadingImage = ResourceLoader.loadImage("/tankLoading.png");
+        logoImage = ResourceLoader.loadImage(Constant.TEXTURE_UI_LOGO);
+        loadingImage = ResourceLoader.loadImage(Constant.TEXTURE_UI_TANKING_LOADING);
 
 //      开始游戏按钮
         startGameButton = new GameEntity("StartGameButton", new Transform(
-                new Point(0,(int)(190 * Settings.SCALE) +  (int)(logoImage.getHeight() * Settings.SCALE)
+                new Vec2f(0,(int)(190 * Settings.SCALE) +  (int)(logoImage.getHeight() * Settings.SCALE)
                                 +  (int)(loadingImage.getHeight() * Settings.SCALE)),
                 new Dimension(Settings.WIDTH, 60)
         ));
@@ -42,8 +44,8 @@ public class WelcomeScene extends Scene {
 
 //      编辑关卡按钮
         editLevelButton = new GameEntity("EditLevelButton", new Transform(
-                new Point(0,(int)(250 * Settings.SCALE) +  (int)(logoImage.getHeight() * Settings.SCALE)
-                        +  (int)(loadingImage.getHeight() * Settings.SCALE)),
+                new Vec2f(0,(250 * Settings.SCALE) + (logoImage.getHeight() * Settings.SCALE)
+                        + (loadingImage.getHeight() * Settings.SCALE)),
                 new Dimension(Settings.WIDTH, 60)
         ));
         editLevelButton.getProps().setProperty("idx", "2");
@@ -52,7 +54,7 @@ public class WelcomeScene extends Scene {
 
 //      欢迎界面
         GameEntity welcomeScene = new GameEntity("welcomeScene", new Transform(
-                new Point(0,0),
+                new Vec2f(0,0),
                 new Dimension(Settings.WIDTH, Settings.HEIGHT)
         ));
         buttons = new GameEntity[] {startGameButton, editLevelButton};
@@ -66,11 +68,11 @@ public class WelcomeScene extends Scene {
 
 
         selectIcon = new GameEntity("SelectIcon", new Transform(
-                new Point(),
+                new Vec2f(),
                 new Dimension()
         ));
         selectIcon.getTransform().setRotate(180);
-        selectIcon.add(new SpriteComponent("/icon.png"));
+        selectIcon.add(new SpriteComponent(Constant.TEXTURE_UI_ICON));
 
 
 

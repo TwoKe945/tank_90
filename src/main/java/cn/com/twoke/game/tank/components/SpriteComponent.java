@@ -26,8 +26,8 @@ public class SpriteComponent extends Component {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(ImageUtil.rotateImage(spriteImage, entity.getTransform().getRotate()), entity.getTransform().getPosition().x,
-                entity.getTransform().getPosition().y,
+        g.drawImage(ImageUtil.rotateImage(spriteImage, entity.getTransform().getRotate()), (int)entity.getTransform().getPosition().x,
+                (int)entity.getTransform().getPosition().y,
                 entity.getTransform().getSize().width,
                 entity.getTransform().getSize().height, null);
     }

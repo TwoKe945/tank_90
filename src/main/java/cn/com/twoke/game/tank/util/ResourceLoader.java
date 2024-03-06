@@ -24,16 +24,19 @@ public abstract class ResourceLoader {
         InputStream is = ResourceLoader.class.getResourceAsStream(imagePath);
         try {
             image = ImageIO.read(is);
+            IMAGE_POOL.put(imagePath, image);
         } catch (IOException e) {
+            System.out.println(imagePath);
             e.printStackTrace();
         } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (null != is) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        IMAGE_POOL.put(imagePath, image);
         return image;
 	}
 	

@@ -3,6 +3,7 @@ package cn.com.twoke.game.tank.main;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.scenes.*;
 import cn.com.twoke.game.tank.scenes.WelcomeScene;
+import cn.com.twoke.game.tank.scenes.LevelScene;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,7 +19,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
     private Thread renderThread;
 
     public TankGame() {
-        changeScene(0);
+        changeScene(2);
         panel = new GamePanel(this, Settings.WIDTH, Settings.HEIGHT);
         window = new GameWindow(panel);
         panel.requestFocus();
@@ -144,5 +145,9 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
     @Override
     public void keyReleased(KeyEvent e) {
         currentScene.keyReleased(e);
+    }
+
+    public Scene getScene() {
+        return currentScene;
     }
 }

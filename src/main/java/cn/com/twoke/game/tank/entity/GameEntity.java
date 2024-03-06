@@ -41,7 +41,8 @@ public class GameEntity {
     }
 
     public Rectangle getHitbox() {
-        return new Rectangle(transform.getPosition(), transform.getSize());
+        return new Rectangle((int)transform.getPosition().x,
+                (int)transform.getPosition().y, transform.getSize().width, transform.getSize().height);
     }
 
     public void update(float dt) {

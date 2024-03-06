@@ -1,21 +1,19 @@
 package cn.com.twoke.game.tank.components;
 
-import cn.com.twoke.game.tank.entity.Transform;
-
 import java.awt.*;
 import java.util.Objects;
 
-public class RetangleComponent extends Component {
+public class RectangleComponent extends Component {
 
     private Color bgColor;
     private Color borderColor;
 
-    public RetangleComponent(Color color) {
+    public RectangleComponent(Color color) {
         this.bgColor = color;
         this.borderColor = null;
     }
 
-    public RetangleComponent(Color color, Color borderColor) {
+    public RectangleComponent(Color color, Color borderColor) {
         this.bgColor = color;
         this.borderColor = borderColor;
     }
