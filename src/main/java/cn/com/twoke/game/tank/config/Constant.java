@@ -11,9 +11,6 @@ public interface Constant {
     String TEXTURE_UI_ICON = "/textures/ui/icon.png";
     String TEXTURE_TANK_ENEMYS = "/textures/tank/Enemys.bmp";
     String TEXTURE_TANK_INITIALIZE = "/textures/tank/Born.bmp";
-
-
-
-
-
+    String TEXTURE_TANK_PLAYER1 = "/textures/tank/Player1.bmp";
+    String TEXTURE_TANK_PLAYER2 = "/textures/tank/Player2.bmp";
 }

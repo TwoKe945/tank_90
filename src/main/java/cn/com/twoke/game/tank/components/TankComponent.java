@@ -42,8 +42,7 @@ public class TankComponent extends Component {
     public  TankComponent(GridPlaygroundComponent playground, TankEntity tankEntity) {
         this.playground = playground;
         this.tankEntity = tankEntity;
-        this.tankEntity.setEntity(entity);
-        this.tankEntity.setTankComponent(this);
+        this.tankEntity.setComponent(this);
         tankInitializeImage = AssetPool.loadTexture(Constant.TEXTURE_TANK_INITIALIZE);
     }
 

@@ -13,6 +13,5 @@ public interface TankEntity{
 
     Image getCurrentFrame(int index);
 
-    void setEntity(GameEntity entity);
-    void setTankComponent(TankComponent tankComponent);
+    void setComponent(TankComponent tankComponent);
 }

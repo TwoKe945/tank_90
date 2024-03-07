@@ -26,4 +26,7 @@ public abstract class Component {
      */
     public void update(float dt) {}
 
+    public GameEntity getEntity() {
+        return entity;
+    }
 }

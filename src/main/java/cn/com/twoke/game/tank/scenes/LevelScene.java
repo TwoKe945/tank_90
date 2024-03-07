@@ -4,9 +4,11 @@ import cn.com.twoke.game.tank.components.GridPlaygroundComponent;
 import cn.com.twoke.game.tank.components.KeyCodeComponent;
 import cn.com.twoke.game.tank.components.TankComponent;
 import cn.com.twoke.game.tank.config.Settings;
+import cn.com.twoke.game.tank.config.tank.PlayerType;
 import cn.com.twoke.game.tank.entity.tank.EnemyTank;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
+import cn.com.twoke.game.tank.entity.tank.PlayerTank;
 import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;
@@ -51,14 +53,13 @@ public class LevelScene extends Scene {
         }
 
         // 玩家1
-//        GameEntity playerTank = new GameEntity("Player1",
-//                new Transform(
-//                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,Settings.PLAYGROUND_MARGIN_TOP),
-//                        new Dimension(28, 28)
-//                ));
-//        playerTank.add(new TankComponent(gridPlaygroundComponent, EnemyLevel.LEVEL_1,
-//                EnemyType.TYPE_1));
-//        addToScene(playerTank);
+        GameEntity playerTank = new GameEntity("Player1",
+                new Transform(
+                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,Settings.PLAYGROUND_MARGIN_TOP),
+                        new Dimension(28, 28)
+                ));
+        playerTank.add(new TankComponent(gridPlaygroundComponent, new PlayerTank(PlayerType.PLAYER_2)));
+        addToScene(playerTank);
     }
 
     public boolean traversalFourPoints(float x, float y, Function<float[], Boolean> handler) {

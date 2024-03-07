@@ -10,15 +10,9 @@ import cn.com.twoke.game.tank.util.AssetPool;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class EnemyTank implements TankEntity {
+public class EnemyTank extends AbstractTankEntity {
 
     private static final BufferedImage[] ENEMY_TANK_TEXTURES;
-    private TankComponent tankComponent;
-    private GameEntity gameEntity;
-
-    private EnemyType type;
-
-    private EnemyLevel level;
 
     static {
         ENEMY_TANK_TEXTURES = new BufferedImage[8 * 8];
@@ -39,16 +33,6 @@ public class EnemyTank implements TankEntity {
         this.level = level;
     }
 
-    @Override
-    public TankType getType() {
-        return null;
-    }
-
-    @Override
-    public TankLevel getLevel() {
-        return null;
-    }
-
     /**
      *  敌人坦克绘制逻辑
      * type = 2 level = 0 => default + 2 * (type - 1) + 4 * 0
@@ -59,16 +43,6 @@ public class EnemyTank implements TankEntity {
      */
     @Override
     public Image getCurrentFrame(int index) {
-        return ENEMY_TANK_TEXTURES[index + tankComponent.getDir().getIndex() * 8 + 2 * (type.getTypeCode() - 1) + 4 * level.getLevelCode()];
-    }
-
-    @Override
-    public void setEntity(GameEntity entity) {
-        this.gameEntity = gameEntity;
-    }
-
-    @Override
-    public void setTankComponent(TankComponent tankComponent) {
-        this.tankComponent = tankComponent;
+        return ENEMY_TANK_TEXTURES[index + component.getDir().getIndex() * 8 + 2 * (type.getTypeCode() - 1) + 4 * level.getLevelCode()];
     }
 }
