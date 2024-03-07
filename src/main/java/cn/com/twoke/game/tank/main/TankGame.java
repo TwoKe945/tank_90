@@ -19,7 +19,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
     private Thread renderThread;
 
     public TankGame() {
-        changeScene(2);
+        changeScene(0);
         panel = new GamePanel(this, Settings.WIDTH, Settings.HEIGHT);
         window = new GameWindow(panel);
         panel.requestFocus();
@@ -35,7 +35,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
                 currentScene = WelcomeScene.get();
                 break;
             case 1:
-                currentScene = LevelScene.get();
+                currentScene = new LevelScene();
                 break;
             case 2:
                 currentScene = LevelEditorScene.get();

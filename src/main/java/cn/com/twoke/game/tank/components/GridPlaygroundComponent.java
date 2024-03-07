@@ -77,7 +77,7 @@ public class GridPlaygroundComponent extends Component {
                             Settings.TILE_WIDTH,
                             Settings.TILE_HEIGHT, null);
                 } else {
-                    g.drawImage(ResourceLoader.loadImage(Constant.TEXTURE_MAP_FLAG),
+                    g.drawImage(AssetPool.loadTexture(Constant.TEXTURE_MAP_FLAG),
                             Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
                             Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
                             Settings.TILE_WIDTH * 2,
@@ -109,7 +109,7 @@ public class GridPlaygroundComponent extends Component {
     }
 
     private void renderBackground(Graphics g) {
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(0x040404));
         Rectangle hitbox = entity.getHitbox();
         g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }

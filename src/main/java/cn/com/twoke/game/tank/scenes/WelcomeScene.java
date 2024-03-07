@@ -28,8 +28,8 @@ public class WelcomeScene extends Scene {
     private int selectIndex = 0;
 
     private WelcomeScene() {
-        logoImage = ResourceLoader.loadImage(Constant.TEXTURE_UI_LOGO);
-        loadingImage = ResourceLoader.loadImage(Constant.TEXTURE_UI_TANKING_LOADING);
+        logoImage = AssetPool.loadTexture(Constant.TEXTURE_UI_LOGO);
+        loadingImage = AssetPool.loadTexture(Constant.TEXTURE_UI_TANKING_LOADING);
 
 //      开始游戏按钮
         startGameButton = new GameEntity("StartGameButton", new Transform(

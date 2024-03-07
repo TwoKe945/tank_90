@@ -39,6 +39,16 @@ public class LevelScene extends Scene {
         addToScene(levelScene);
 
 
+        GameEntity entity = new GameEntity("EnemyTank" + 0, new Transform(
+                new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,
+                        Settings.PLAYGROUND_MARGIN_TOP ),
+                new Dimension(28, 28)
+        ));
+        TankComponent tankComponent = new TankComponent(gridPlaygroundComponent.getGridData(),
+                EnemyLevel.LEVEL_1,
+                EnemyType.TYPE_1);
+        entity.add(tankComponent);
+        addToScene(entity);;
 
 
 
@@ -65,23 +75,6 @@ public class LevelScene extends Scene {
 
     public void setGrid(int[][] grid) {
         gridPlaygroundComponent.setGrid(grid);
-        Random random = new Random();
-        for (int i = 0; i < 20; ) {
-            float x =  Settings.PLAYGROUND_MARGIN_LEFT + random.nextInt(Settings.PLAYGROUND_WIDTH - 28);
-            float y =  Settings.PLAYGROUND_MARGIN_TOP + random.nextInt(Settings.PLAYGROUND_HEIGHT - 28);
-            if (traversalFourPoints(x, y, this::check)) {
-                GameEntity entity = new GameEntity("EnemyTank" + i, new Transform(
-                        new Vec2f(x,y),
-                        new Dimension(28, 28)
-                ));
-                TankComponent tankComponent = new TankComponent(gridPlaygroundComponent.getGridData(),
-                        EnemyLevel.values()[random.nextInt(EnemyLevel.values().length)],
-                        EnemyType.values()[random.nextInt(EnemyType.values().length)]);
-                entity.add(tankComponent);
-                addToScene(entity);
-                i++;
-            }
-        }
     }
 
     private Boolean check(float[] point) {
@@ -89,7 +82,7 @@ public class LevelScene extends Scene {
         int tileY = (int) (point[1] - Settings.PLAYGROUND_MARGIN_TOP) / Settings.TILE_HEIGHT;
         if (tileY >= Settings.PLAYGROUND_ROW ||
                 tileX >= Settings.PLAYGROUND_COL ||
-                tileX < 0 || tileY < 0
+                 tileX < 0 || tileY < 0
         ) return false;
         return gridPlaygroundComponent.getGridData()[tileY][tileX] != 1 && gridPlaygroundComponent.getGridData()[tileY][tileX] != 2;
     }

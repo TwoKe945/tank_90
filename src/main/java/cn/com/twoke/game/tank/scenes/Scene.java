@@ -30,7 +30,7 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
         this.keyListeners = new ArrayList<>();
     }
 
-    public synchronized void addToScene(GameEntity entity) {
+    public void addToScene(GameEntity entity) {
         if (Objects.isNull(entity)) return;
         entities.add(entity);
         for (Component component : entity.getAllComponents()) {

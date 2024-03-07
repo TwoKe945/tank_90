@@ -9,5 +9,11 @@ public interface Constant {
     String TEXTURE_UI_TANKING_LOADING = "/textures/ui/tankLoading.png";
     String TEXTURE_MAP_FLAG = "/textures/map/flag.png";
     String TEXTURE_UI_ICON = "/textures/ui/icon.png";
+    String TEXTURE_TANK_ENEMYS = "/textures/tank/Enemys.bmp";
+    String TEXTURE_TANK_INITIALIZE = "/textures/tank/Born.bmp";
+
+
+
+
 
 }

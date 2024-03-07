@@ -15,7 +15,7 @@ public class SpriteComponent extends Component {
 
     public SpriteComponent(String spriteImagePath) {
         super();
-        spriteImage = ResourceLoader.loadImage(spriteImagePath);
+        spriteImage = AssetPool.loadTexture(spriteImagePath);
     }
 
     @Override

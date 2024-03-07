@@ -28,9 +28,9 @@ public class EditButtonComponent extends Component {
         this.minSize = minSize;
         if (editType == 0) {
             if (minSize) {
-                editImage = ResourceLoader.loadImage(Constant.TEXTURE_MAP_EMPTY);
+                editImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_EMPTY);
             } else {
-                editImage = ResourceLoader.loadImage(Constant.TEXTURE_MAP_EMPTY4);
+                editImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_EMPTY4);
             }
         } else if (editType <= AssetPool.SPRITE_SIZE) {
             editImage = AssetPool.TILE_SPRITE_IMG.getSubimage( (editType - 1) * Settings.DEFAULT_TILE_WIDTH,0,Settings.DEFAULT_TILE_WIDTH, Settings.DEFAULT_TILE_HEIGHT);
