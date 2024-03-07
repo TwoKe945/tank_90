@@ -25,4 +25,8 @@ public class Settings {
     public static final int HEIGHT = PLAYGROUND_HEIGHT + PLAYGROUND_MARGIN_TOP + PLAYGROUND_MARGIN_BOTTOM;
 
 
+
+    public static final int TANK_INITIALIZE_FRAME_WIDTH = 32;
+    public static final int TANK_INITIALIZE_FRAME_HEIGHT = 32;
+
 }
