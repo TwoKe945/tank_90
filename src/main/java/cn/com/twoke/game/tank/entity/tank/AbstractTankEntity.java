@@ -9,6 +9,7 @@ public abstract class AbstractTankEntity implements TankEntity {
     protected TankComponent component;
     protected TankType type;
     protected TankLevel level;
+    protected float movingSpeed = 0.5f;
 
     @Override
     public TankType getType() {
@@ -20,6 +21,10 @@ public abstract class AbstractTankEntity implements TankEntity {
         return level;
     }
 
+    @Override
+    public float getMoveSpeed() {
+        return movingSpeed;
+    }
 
     @Override
     public void setComponent(TankComponent tankComponent) {

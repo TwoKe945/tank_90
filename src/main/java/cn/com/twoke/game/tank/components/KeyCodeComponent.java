@@ -30,6 +30,7 @@ public class KeyCodeComponent extends Component implements KeyListener {
             Integer key = entry.getKey();
             if (key == e.getKeyCode()) {
                 this.clickFlags.replace(key, true);
+                this.clickHandlers.get(key).pressed(e, entity);
             }
         }
     }
@@ -42,6 +43,7 @@ public class KeyCodeComponent extends Component implements KeyListener {
                 this.clickHandlers.get(key).handle(e, entity);
             }
             this.clickFlags.replace(key, false);
+            this.clickHandlers.get(key).released(e, entity);
         }
     }
 
@@ -54,6 +56,8 @@ public class KeyCodeComponent extends Component implements KeyListener {
 
     public interface KeyCodeHandler {
         void handle(KeyEvent e, GameEntity entity);
+        default void pressed(KeyEvent e, GameEntity entity) {}
+        default void released(KeyEvent e, GameEntity entity) {}
     }
 
 }

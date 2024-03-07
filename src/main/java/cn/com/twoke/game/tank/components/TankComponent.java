@@ -31,7 +31,7 @@ public class TankComponent extends Component {
     /**
      * 是否自动移动
      */
-    private boolean isAutoMove = true;
+    private boolean isAutoTurn = true;
     /**
      * 是否移动中
      */
@@ -100,9 +100,6 @@ public class TankComponent extends Component {
                 entity.getTransform().getSize().height);
     }
 
-
-    protected float speed = 0.5f;
-
     @Override
     public void update(float dt) {
         if (isMoving) {
@@ -116,34 +113,26 @@ public class TankComponent extends Component {
     }
 
     private void updatePos() {
-        if (isAutoMove) {
-            updateAutoMovePos();
-        } else {
-            // TODO 实现键盘操作控制坦克逻辑
-        }
-    }
-
-    private void updateAutoMovePos() {
-        if (!isInitialized) return;
+        if (!isInitialized || !isMoving) return;
         Transform transform = entity.getTransform();
         Vec2f position = new Vec2f(transform.getPosition());
         switch (dir) {
             case UP:
-                position.y = position.y - speed;
+                position.y = position.y - tankEntity.getMoveSpeed();
                 break;
             case LEFT:
-                position.x = position.x - speed;
+                position.x = position.x - tankEntity.getMoveSpeed();
                 break;
             case RIGHT:
-                position.x =  position.x + speed;
+                position.x =  position.x + tankEntity.getMoveSpeed();
                 break;
             case DOWN:
-                position.y  = position.y  + speed;
+                position.y  = position.y  + tankEntity.getMoveSpeed();
                 break;
         }
         if (canMove(position.x, position.y)) {
             transform.setPosition(position.x, position.y);
-        } else {
+        } else if (isAutoTurn) {
             Dir value = Dir.values()[random.nextInt(Dir.values().length)];
             if (value != dir) {
                 dir = value;
@@ -218,5 +207,13 @@ public class TankComponent extends Component {
 
     public void setDir(Dir dir) {
         this.dir = dir;
+    }
+
+    public boolean isAutoTurn() {
+        return isAutoTurn;
+    }
+
+    public void setAutoTurn(boolean autoTurn) {
+        isAutoTurn = autoTurn;
     }
 }

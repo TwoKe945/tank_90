@@ -1,9 +1,12 @@
 package cn.com.twoke.game.tank.scenes;
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.components.GridPlaygroundComponent;
 import cn.com.twoke.game.tank.components.KeyCodeComponent;
 import cn.com.twoke.game.tank.components.TankComponent;
 import cn.com.twoke.game.tank.config.Settings;
+import cn.com.twoke.game.tank.config.tank.Dir;
+import cn.com.twoke.game.tank.config.tank.PlayerLevel;
 import cn.com.twoke.game.tank.config.tank.PlayerType;
 import cn.com.twoke.game.tank.entity.tank.EnemyTank;
 import cn.com.twoke.game.tank.entity.GameEntity;
@@ -58,8 +61,38 @@ public class LevelScene extends Scene {
                         new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,Settings.PLAYGROUND_MARGIN_TOP),
                         new Dimension(28, 28)
                 ));
-        playerTank.add(new TankComponent(gridPlaygroundComponent, new PlayerTank(PlayerType.PLAYER_2)));
+        playerTank.add(new TankComponent(gridPlaygroundComponent, new PlayerTank(PlayerType.PLAYER_1)));
+        playerTank.add(createPlayer1KeyCodeComponent(playerTank));
         addToScene(playerTank);
+    }
+
+    private Component createPlayer1KeyCodeComponent(GameEntity playerTank) {
+        TankComponent tankComponent = playerTank.get(TankComponent.class);
+        return new KeyCodeComponent()
+          .onClick(KeyEvent.VK_W, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.UP)))
+          .onClick(KeyEvent.VK_S, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.DOWN)))
+          .onClick(KeyEvent.VK_A, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.LEFT)))
+          .onClick(KeyEvent.VK_D, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.RIGHT)));
+    }
+
+    private KeyCodeComponent.KeyCodeHandler createHandler(TankComponent tankComponent, Runnable runnable) {
+
+        return new KeyCodeComponent.KeyCodeHandler() {
+            @Override
+            public void handle(KeyEvent e, GameEntity entity) {
+                tankComponent.setMoving(false);
+            }
+
+            @Override
+            public void pressed(KeyEvent e, GameEntity entity) {
+                runnable.run();
+                tankComponent.setMoving(true);
+            }
+
+            @Override
+            public void released(KeyEvent e, GameEntity entity) {
+            }
+        };
     }
 
     public boolean traversalFourPoints(float x, float y, Function<float[], Boolean> handler) {

@@ -14,4 +14,6 @@ public interface TankEntity{
     Image getCurrentFrame(int index);
 
     void setComponent(TankComponent tankComponent);
+
+    float getMoveSpeed();
 }

@@ -2,11 +2,8 @@ package cn.com.twoke.game.tank.entity.tank;
 
 import cn.com.twoke.game.tank.components.TankComponent;
 import cn.com.twoke.game.tank.config.Constant;
-import cn.com.twoke.game.tank.config.tank.EnemyLevel;
-import cn.com.twoke.game.tank.config.tank.EnemyType;
 import cn.com.twoke.game.tank.config.tank.PlayerLevel;
 import cn.com.twoke.game.tank.config.tank.PlayerType;
-import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.util.AssetPool;
 
 import java.awt.*;
@@ -52,5 +49,12 @@ public class PlayerTank extends AbstractTankEntity {
     public Image getCurrentFrame(int index) {
         return PLAYER_TANK_TEXTURES[type.getTypeCode()]
                 [index + component.getDir().getIndex() * 8 + 2 * level.getLevelCode()];
+    }
+
+    @Override
+    public void setComponent(TankComponent tankComponent) {
+        super.setComponent(tankComponent);
+        component.setAutoTurn(false); // 关闭自动转向
+        component.setMoving(false);
     }
 }
