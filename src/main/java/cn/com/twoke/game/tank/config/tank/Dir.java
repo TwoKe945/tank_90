@@ -1,4 +1,4 @@
-package cn.com.twoke.game.tank.config;
+package cn.com.twoke.game.tank.config.tank;
 
 public enum Dir {
     UP(0, 2),

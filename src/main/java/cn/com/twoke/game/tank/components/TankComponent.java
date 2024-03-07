@@ -1,6 +1,8 @@
 package cn.com.twoke.game.tank.components;
 
 import cn.com.twoke.game.tank.config.*;
+import cn.com.twoke.game.tank.config.tank.Dir;
+import cn.com.twoke.game.tank.entity.tank.TankEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import cn.com.twoke.game.tank.util.AssetPool;
 import com.sun.javafx.geom.Vec2f;
@@ -18,49 +20,38 @@ import static cn.com.twoke.game.tank.config.Settings.TANK_INITIALIZE_FRAME_WIDTH
  */
 public class TankComponent extends Component {
 
-    BufferedImage[] tankImages;
     private Dir dir = Dir.UP;
-    private int[][] grid;
-    private EnemyType type;
-    private EnemyLevel level;
-
+    private final GridPlaygroundComponent playground;
+    private final TankEntity tankEntity;
+    private BufferedImage tankInitializeImage;
     /**
      * 初始化完成标识
      */
-    private boolean initialized = false;
-    private boolean autoMoveable = true;
-    private boolean moving = true;
+    private boolean isInitialized = false;
+    /**
+     * 是否自动移动
+     */
+    private boolean isAutoMove = true;
+    /**
+     * 是否移动中
+     */
+    private boolean isMoving = true;
+    int movingFrameIndex = 0;
 
-    private BufferedImage tankInitializeImage;
 
-
-    public  TankComponent(int[][] grid, EnemyLevel level, EnemyType type) {
-        this.grid = grid;
+    public  TankComponent(GridPlaygroundComponent playground, TankEntity tankEntity) {
+        this.playground = playground;
+        this.tankEntity = tankEntity;
+        this.tankEntity.setEntity(entity);
+        this.tankEntity.setTankComponent(this);
         tankInitializeImage = AssetPool.loadTexture(Constant.TEXTURE_TANK_INITIALIZE);
-        tankImages = new BufferedImage[8 * 8];
-        BufferedImage bufferedImage = AssetPool.loadTexture(Constant.TEXTURE_TANK_ENEMYS);
-
-        for (int i = 0; i < tankImages.length; i++) {
-            int x = i % 8;
-            int y = i / 8;
-            tankImages[i] = bufferedImage.getSubimage(x * 28, y * 28, 28, 28);
-        }
-        this.level = level;
-        this.type = type;
     }
-
-    int index = 0;
-
 
     @Override
     public void render(Graphics g) {
-        // 敌人坦克绘制逻辑
-        // type = 2 level = 0 => default + 2 * (type - 1) + 4 * 0
-        // type = 2 level = 1 => default + 2 * (type - 1) + 4 * 1
-        // type = 2 level = 2 => default + 2 * (type - 1) + 4 * 9
         // 绘制坦克生成动画
         drawAnimationForInitializingTank(g);
-        if(initialized) {
+        if(isInitialized) {
             // 绘制坦克
             drawTank(g);
         }
@@ -68,24 +59,26 @@ public class TankComponent extends Component {
 
 
     private int animationFrameIndex = 0; // 动画帧数索引
-    private int animationLoopCount = 2; // 动画循环次数
     private int singleFrameShowTimeCount = 0;
+    private static final int INITIALIZE_ANIMATION_LOOP_COUNT = 2; // 动画循环次数
+    private static final int INITIALIZE_ANIMATION_FRAME_COUNT = 4; // 动画帧数
+    private static final int SINGLE_FRAME_RUNTIME_COUNT = 10; // 单帧动画运行次数
 
     /**
      * 绘制初始化坦克动画
      * @param g
      */
     private void drawAnimationForInitializingTank(Graphics g) {
-        if (initialized) return;
-        int idx = animationFrameIndex % 4;
+        if (isInitialized) return;
+        int idx = animationFrameIndex % INITIALIZE_ANIMATION_FRAME_COUNT;
         g.drawImage(tankInitializeImage.getSubimage(idx * TANK_INITIALIZE_FRAME_WIDTH,0, TANK_INITIALIZE_FRAME_WIDTH, TANK_INITIALIZE_FRAME_HEIGHT), (int)entity.getTransform().getPosition().x,
                 (int)entity.getTransform().getPosition().y , (int)(TANK_INITIALIZE_FRAME_HEIGHT * Settings.SCALE), (int)(TANK_INITIALIZE_FRAME_HEIGHT * Settings.SCALE), null);
-        if (singleFrameShowTimeCount > 10) { // 动画中的一帧展示10次切换下一帧
+        if (singleFrameShowTimeCount > SINGLE_FRAME_RUNTIME_COUNT) { // 动画中的一帧展示10次切换下一帧
             animationFrameIndex++;
             singleFrameShowTimeCount = 0;
         }
-        if (animationFrameIndex >= animationLoopCount * 4) { // 初始化动画循环两次后初始完成
-            initialized = true;
+        if (animationFrameIndex >= INITIALIZE_ANIMATION_LOOP_COUNT * INITIALIZE_ANIMATION_FRAME_COUNT) { // 初始化动画循环两次后初始完成
+            isInitialized = true;
             singleFrameShowTimeCount = 0;
             animationFrameIndex = 0;
         }
@@ -93,7 +86,7 @@ public class TankComponent extends Component {
     }
 
     private void drawTank(Graphics g) {
-        g.drawImage(tankImages[index + dir.getIndex() * 8 + 2 * (type.code - 1) + 4 * level.code],
+        g.drawImage(tankEntity.getCurrentFrame(movingFrameIndex),
                 (int)entity.getTransform().getPosition().x,
                 (int)entity.getTransform().getPosition().y,
                 entity.getTransform().getSize().width,
@@ -113,26 +106,26 @@ public class TankComponent extends Component {
 
     @Override
     public void update(float dt) {
-        if (moving) {
-            if (index + 1 > 1) {
-                index = 0;
+        if (isMoving) {
+            if (movingFrameIndex + 1 > 1) {
+                movingFrameIndex = 0;
             }   else {
-                this.index++;
+                this.movingFrameIndex++;
             }
         }
         updatePos();
     }
 
     private void updatePos() {
-        if (autoMoveable) {
+        if (isAutoMove) {
             updateAutoMovePos();
         } else {
-            // TODO
+            // TODO 实现键盘操作控制坦克逻辑
         }
     }
 
     private void updateAutoMovePos() {
-        if (!initialized) return;
+        if (!isInitialized) return;
         Transform transform = entity.getTransform();
         Vec2f position = new Vec2f(transform.getPosition());
         switch (dir) {
@@ -170,7 +163,7 @@ public class TankComponent extends Component {
             tileX >= Settings.PLAYGROUND_COL ||
             tileX < 0 || tileY < 0
         ) return false;
-        return grid[tileY][tileX] != 1 && grid[tileY][tileX] != 2;
+        return playground.getGridData()[tileY][tileX] != 1 && playground.getGridData()[tileY][tileX] != 2;
     }
 
     public boolean traversalFourPoints(float x, float y, Function<float[], Boolean> handler) {
@@ -202,8 +195,29 @@ public class TankComponent extends Component {
             Settings.PLAYGROUND_HEIGHT
     );
 
+    public boolean isInitialized() {
+        return isInitialized;
+    }
 
-    public void setGrid(int[][] grid) {
-        this.grid = grid;
+    public void setInitialized(boolean initialized) {
+        this.isInitialized = initialized;
+    }
+
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.isMoving = moving;
+    }
+
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
     }
 }

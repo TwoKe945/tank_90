@@ -3,9 +3,8 @@ package cn.com.twoke.game.tank.scenes;
 import cn.com.twoke.game.tank.components.GridPlaygroundComponent;
 import cn.com.twoke.game.tank.components.KeyCodeComponent;
 import cn.com.twoke.game.tank.components.TankComponent;
-import cn.com.twoke.game.tank.config.EnemyLevel;
-import cn.com.twoke.game.tank.config.EnemyType;
 import cn.com.twoke.game.tank.config.Settings;
+import cn.com.twoke.game.tank.entity.tank.EnemyTank;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import com.sun.javafx.geom.Vec2f;
@@ -39,19 +38,27 @@ public class LevelScene extends Scene {
         addToScene(levelScene);
 
 
-        GameEntity entity = new GameEntity("EnemyTank" + 0, new Transform(
-                new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,
-                        Settings.PLAYGROUND_MARGIN_TOP ),
-                new Dimension(28, 28)
-        ));
-        TankComponent tankComponent = new TankComponent(gridPlaygroundComponent.getGridData(),
-                EnemyLevel.LEVEL_1,
-                EnemyType.TYPE_1);
-        entity.add(tankComponent);
-        addToScene(entity);;
+        Random random = new Random();
+        for (int i = 0; i < 1; i++) {
+            GameEntity entity = new GameEntity("EnemyTank" + 0, new Transform(
+                    new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + random.nextInt(Settings.PLAYGROUND_WIDTH - 28),
+                            Settings.PLAYGROUND_MARGIN_TOP + random.nextInt(Settings.PLAYGROUND_HEIGHT - 28) ),
+                    new Dimension(28, 28)
+            ));
+            TankComponent tankComponent = new TankComponent(gridPlaygroundComponent, new EnemyTank());
+            entity.add(tankComponent);
+            addToScene(entity);
+        }
 
-
-
+        // 玩家1
+//        GameEntity playerTank = new GameEntity("Player1",
+//                new Transform(
+//                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,Settings.PLAYGROUND_MARGIN_TOP),
+//                        new Dimension(28, 28)
+//                ));
+//        playerTank.add(new TankComponent(gridPlaygroundComponent, EnemyLevel.LEVEL_1,
+//                EnemyType.TYPE_1));
+//        addToScene(playerTank);
     }
 
     public boolean traversalFourPoints(float x, float y, Function<float[], Boolean> handler) {
