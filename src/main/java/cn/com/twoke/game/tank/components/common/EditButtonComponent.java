@@ -1,5 +1,6 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.util.AssetPool;

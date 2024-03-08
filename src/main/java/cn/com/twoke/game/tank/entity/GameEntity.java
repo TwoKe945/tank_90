@@ -25,6 +25,8 @@ public class GameEntity {
 
     private Transform transform;
 
+    private int zIndex = 0;
+
     public String getName() {
         return name;
     }
@@ -34,6 +36,19 @@ public class GameEntity {
         this.transform = transform;
         this.components = new ArrayList<>();
         this.properties = new Properties();
+        this.zIndex = 0;
+    }
+
+    public GameEntity(String name, Transform transform, int zIndex) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.properties = new Properties();
+        this.zIndex = zIndex;
+    }
+
+    public int getzIndex() {
+        return zIndex;
     }
 
     public Properties getProps() {

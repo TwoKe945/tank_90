@@ -1,9 +1,6 @@
 package cn.com.twoke.game.tank.entity.tank;
 
-import cn.com.twoke.game.tank.components.TankComponent;
-import cn.com.twoke.game.tank.entity.GameEntity;
-
-import java.awt.*;
+import cn.com.twoke.game.tank.components.tank.TankComponent;
 
 public abstract class AbstractTankEntity implements TankEntity {
     protected TankComponent component;

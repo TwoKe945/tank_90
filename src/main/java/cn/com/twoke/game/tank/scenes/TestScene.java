@@ -1,7 +1,7 @@
 package cn.com.twoke.game.tank.scenes;
 
-import cn.com.twoke.game.tank.components.MouseMotionComponent;
-import cn.com.twoke.game.tank.components.RectangleComponent;
+import cn.com.twoke.game.tank.components.input.MouseMotionComponent;
+import cn.com.twoke.game.tank.components.common.RectangleComponent;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import com.sun.javafx.geom.Vec2f;

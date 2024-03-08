@@ -1,12 +1,11 @@
 package cn.com.twoke.game.tank.scenes;
 
 import cn.com.twoke.game.tank.components.Component;
-import cn.com.twoke.game.tank.components.GridPlaygroundComponent;
-import cn.com.twoke.game.tank.components.KeyCodeComponent;
-import cn.com.twoke.game.tank.components.TankComponent;
+import cn.com.twoke.game.tank.components.common.GridPlaygroundComponent;
+import cn.com.twoke.game.tank.components.input.KeyCodeComponent;
+import cn.com.twoke.game.tank.components.tank.TankComponent;
 import cn.com.twoke.game.tank.config.Settings;
-import cn.com.twoke.game.tank.config.tank.Dir;
-import cn.com.twoke.game.tank.config.tank.PlayerLevel;
+import cn.com.twoke.game.tank.config.Dir;
 import cn.com.twoke.game.tank.config.tank.PlayerType;
 import cn.com.twoke.game.tank.entity.tank.EnemyTank;
 import cn.com.twoke.game.tank.entity.GameEntity;
@@ -23,9 +22,22 @@ import java.util.function.Function;
 
 public class LevelScene extends Scene {
     GridPlaygroundComponent gridPlaygroundComponent;
-
     List<TankComponent> tanks;
+    private int[][] grid;
+    public void initGrid() {
+        this.grid[this.grid.length - 1][11] = 1;
+        this.grid[this.grid.length - 2][11] = 1;
+        this.grid[this.grid.length - 3][11] = 1;
+        this.grid[this.grid.length - 2][12] = 6;
+        this.grid[this.grid.length - 3][12] = 1;
+        this.grid[this.grid.length - 3][13] = 1;
+        this.grid[this.grid.length - 3][14] = 1;
+        this.grid[this.grid.length - 2][14] = 1;
+        this.grid[this.grid.length - 1][14] = 1;
+    }
+
     public LevelScene() {
+        initGrid();
         tanks = new ArrayList<>();
         GameEntity playground = new GameEntity("Playground", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT, Settings.PLAYGROUND_MARGIN_TOP),
@@ -33,6 +45,19 @@ public class LevelScene extends Scene {
         gridPlaygroundComponent  = new GridPlaygroundComponent();
         playground.add(gridPlaygroundComponent);
         addToScene(playground);
+        GameEntity tileItem;
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[y].length; x++) {
+                tileItem = new GameEntity("tileItem" + x + "_" + y, new Transform(
+                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
+                                Settings.PLAYGROUND_MARGIN_TOP + x * Settings.TILE_HEIGHT),
+                        new Dimension( grid[y][x] == 6 ? Settings.TILE_WIDTH * 2 : Settings.TILE_WIDTH,
+                                grid[y][x] == 6 ? Settings.TILE_WIDTH * 2 : Settings.TILE_HEIGHT)),
+                        grid[y][x] == 5 ? 1 : 0
+                        );
+                addToScene(tileItem);
+            }
+        }
 
         GameEntity levelScene = new GameEntity("LevelScene", new Transform(
                 new Vec2f(0, 0),
@@ -72,7 +97,13 @@ public class LevelScene extends Scene {
           .onClick(KeyEvent.VK_W, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.UP)))
           .onClick(KeyEvent.VK_S, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.DOWN)))
           .onClick(KeyEvent.VK_A, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.LEFT)))
-          .onClick(KeyEvent.VK_D, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.RIGHT)));
+          .onClick(KeyEvent.VK_D, createHandler(tankComponent, () ->  tankComponent.setDir(Dir.RIGHT)))
+          .onClick(KeyEvent.VK_SPACE, (e, entity) -> {
+                if (tankComponent.bulletCountNumber() == 0) {
+                    tankComponent.fire();
+                }
+
+          });
     }
 
     private KeyCodeComponent.KeyCodeHandler createHandler(TankComponent tankComponent, Runnable runnable) {
@@ -87,10 +118,6 @@ public class LevelScene extends Scene {
             public void pressed(KeyEvent e, GameEntity entity) {
                 runnable.run();
                 tankComponent.setMoving(true);
-            }
-
-            @Override
-            public void released(KeyEvent e, GameEntity entity) {
             }
         };
     }

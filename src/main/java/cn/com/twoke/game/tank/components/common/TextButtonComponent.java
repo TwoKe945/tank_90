@@ -1,11 +1,12 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.Transform;
 
 import java.awt.*;
 import java.util.Objects;
 
-public class TextButtonComponent extends Component{
+public class TextButtonComponent extends Component {
     private String text;
     private Font font;
 

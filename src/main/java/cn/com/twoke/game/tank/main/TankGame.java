@@ -69,7 +69,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
 
             if (deltaU >= 1) {
                 panel.requestFocus();
-                update((float) (timePerFrame / 1E9f));
+                update((float) (timePerUpdate / 1E9f));
                 updates++;
                 deltaU--;
             }

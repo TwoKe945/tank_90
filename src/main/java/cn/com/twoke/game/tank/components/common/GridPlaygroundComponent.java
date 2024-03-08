@@ -1,10 +1,12 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
 
+import cn.com.twoke.game.tank.components.Component;
+import cn.com.twoke.game.tank.components.common.EditButtonComponent;
+import cn.com.twoke.game.tank.components.input.MouseMotionComponent;
 import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.util.AssetPool;
-import cn.com.twoke.game.tank.util.ResourceLoader;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -70,12 +72,17 @@ public class GridPlaygroundComponent extends Component {
         for (int y = 0; y < grid.length; y++) {
             for (int x = 0; x < grid[y].length; x++) {
                 if (grid[y][x] == 0) continue;
-                if (grid[y][x] != 6) {
+                if (grid[y][x] != 6 ) {
                     g.drawImage(AssetPool.TILE_SPRITE_IMG.getSubimage( (grid[y][x] - 1) * Settings.DEFAULT_TILE_WIDTH,0,Settings.DEFAULT_TILE_WIDTH, Settings.DEFAULT_TILE_HEIGHT),
                             Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
                             Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
                             Settings.TILE_WIDTH,
                             Settings.TILE_HEIGHT, null);
+                    g.setColor(Color.red);
+                    g.drawRect(Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
+                            Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
+                            Settings.TILE_WIDTH,
+                            Settings.TILE_HEIGHT);
                 } else {
                     g.drawImage(AssetPool.loadTexture(Constant.TEXTURE_MAP_FLAG),
                             Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,

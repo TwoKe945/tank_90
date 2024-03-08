@@ -1,6 +1,7 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
 
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.util.AssetPool;
 import cn.com.twoke.game.tank.util.ImageUtil;

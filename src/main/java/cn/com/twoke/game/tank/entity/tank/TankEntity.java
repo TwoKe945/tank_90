@@ -1,7 +1,6 @@
 package cn.com.twoke.game.tank.entity.tank;
 
-import cn.com.twoke.game.tank.components.TankComponent;
-import cn.com.twoke.game.tank.entity.GameEntity;
+import cn.com.twoke.game.tank.components.tank.TankComponent;
 
 import java.awt.*;
 

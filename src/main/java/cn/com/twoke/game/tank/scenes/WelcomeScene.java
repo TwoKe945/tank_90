@@ -1,14 +1,13 @@
 package cn.com.twoke.game.tank.scenes;
 
-import cn.com.twoke.game.tank.components.KeyCodeComponent;
-import cn.com.twoke.game.tank.components.SpriteComponent;
-import cn.com.twoke.game.tank.components.TextButtonComponent;
+import cn.com.twoke.game.tank.components.input.KeyCodeComponent;
+import cn.com.twoke.game.tank.components.common.SpriteComponent;
+import cn.com.twoke.game.tank.components.common.TextButtonComponent;
 import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import cn.com.twoke.game.tank.util.AssetPool;
-import cn.com.twoke.game.tank.util.ResourceLoader;
 import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;

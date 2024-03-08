@@ -1,5 +1,6 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.input;
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
 
 import java.awt.event.KeyEvent;
@@ -41,8 +42,8 @@ public class KeyCodeComponent extends Component implements KeyListener {
             Integer key = entry.getKey();
             if (key == e.getKeyCode() && entry.getValue()) {
                 this.clickHandlers.get(key).handle(e, entity);
+                this.clickFlags.replace(key, false);
             }
-            this.clickFlags.replace(key, false);
             this.clickHandlers.get(key).released(e, entity);
         }
     }

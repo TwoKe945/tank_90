@@ -1,6 +1,6 @@
 package cn.com.twoke.game.tank.entity.tank;
 
-import cn.com.twoke.game.tank.components.TankComponent;
+import cn.com.twoke.game.tank.components.tank.TankComponent;
 import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.tank.PlayerLevel;
 import cn.com.twoke.game.tank.config.tank.PlayerType;
@@ -55,6 +55,7 @@ public class PlayerTank extends AbstractTankEntity {
     public void setComponent(TankComponent tankComponent) {
         super.setComponent(tankComponent);
         component.setAutoTurn(false); // 关闭自动转向
-        component.setMoving(false);
+        component.setMoving(false); // 关闭移动
+        component.setAutoFire(false); // 关闭自动发射子弹
     }
 }

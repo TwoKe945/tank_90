@@ -1,4 +1,6 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
+
+import cn.com.twoke.game.tank.components.Component;
 
 import java.awt.*;
 import java.util.Objects;
