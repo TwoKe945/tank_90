@@ -8,6 +8,7 @@ import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import cn.com.twoke.game.tank.util.AssetPool;
+import cn.com.twoke.game.tank.util.LevelUtil;
 import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;
@@ -103,8 +104,10 @@ public class WelcomeScene extends Scene {
     private void onClickEnter(KeyEvent keyEvent, GameEntity entity) {
         Optional.ofNullable(buttons[selectIndex].getProps().getProperty("idx"))
                         .ifPresent(idx -> {
-                            System.out.println(idx);
                             game.changeScene(Integer.parseInt(idx));
+                            if (game.getScene() instanceof LevelScene) {
+                                ((LevelScene)game.getScene()).setGrid(LevelUtil.get(0));
+                            }
                         });
     }
 

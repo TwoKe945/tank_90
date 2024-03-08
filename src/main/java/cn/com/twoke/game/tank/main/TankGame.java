@@ -4,6 +4,7 @@ import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.scenes.*;
 import cn.com.twoke.game.tank.scenes.WelcomeScene;
 import cn.com.twoke.game.tank.scenes.LevelScene;
+import cn.com.twoke.game.tank.util.LevelUtil;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -41,6 +42,11 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
         this.panel.addMouseMotionListener(this);
         this.panel.addKeyListener(this);
         startRenderLoop();
+        try {
+            LevelUtil.loadLevels();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeScene(int index) {

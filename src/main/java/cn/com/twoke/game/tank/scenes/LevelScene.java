@@ -21,13 +21,12 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 public class LevelScene extends Scene {
-    List<TankComponent> tanks;
+    private static final int MAX_ENEMIES_SIZE = 20;
+    private int enemiesSize = 0;
 
     public LevelScene() {
-        tanks = new ArrayList<>();
         GameEntity playground = new GameEntity("Playground", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT, Settings.PLAYGROUND_MARGIN_TOP),
                 new Dimension(Settings.PLAYGROUND_WIDTH, Settings.PLAYGROUND_HEIGHT)));
@@ -41,28 +40,52 @@ public class LevelScene extends Scene {
         }));
         addToScene(levelScene);
 
+        // 玩家1
+        GameEntity playerTank = new GameEntity("Player1",
+                new Transform(
+                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + 9 * Settings.TILE_WIDTH + 19, 19 +(Settings.PLAYGROUND_ROW - 2) * Settings.TILE_HEIGHT + Settings.PLAYGROUND_MARGIN_TOP),
+                        new Dimension(28, 28)
+                ), 1, GameType.TANK, GameType.PLAYER);
+        playerTank.add(new TankComponent(new PlayerTank(PlayerType.PLAYER_1)));
+        playerTank.add(createPlayer1KeyCodeComponent(playerTank));
+        addToScene(playerTank);
+    }
 
-        Random random = new Random();
-        for (int i = 0; i < 1; i++) {
+
+    Random random = new Random();
+
+    public void randomEnemies() {
+        if (enemiesSize >= MAX_ENEMIES_SIZE) return;
+        int x, y;
+        for (int i = 0; i < 1;) {
+            x = Settings.PLAYGROUND_MARGIN_LEFT + random.nextInt(Settings.PLAYGROUND_WIDTH - 28);
+            y = Settings.PLAYGROUND_MARGIN_TOP + random.nextInt(Settings.PLAYGROUND_HEIGHT / 4);
+            if (!canGenerate(x, y, 28, 28)) {
+                continue;
+            }
             GameEntity entity = new GameEntity("EnemyTank" + 0, new Transform(
-                    new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + random.nextInt(Settings.PLAYGROUND_WIDTH - 28),
-                            Settings.PLAYGROUND_MARGIN_TOP + random.nextInt(Settings.PLAYGROUND_HEIGHT - 28) ),
+                    new Vec2f(x, y),
                     new Dimension(28, 28)
             ), 1);
             TankComponent tankComponent = new TankComponent(new EnemyTank());
             entity.add(tankComponent);
             addToScene(entity);
+            i++;
+            enemiesSize++;
         }
+    }
 
-        // 玩家1
-        GameEntity playerTank = new GameEntity("Player1",
-                new Transform(
-                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT,Settings.PLAYGROUND_MARGIN_TOP),
-                        new Dimension(28, 28)
-                ), 1);
-        playerTank.add(new TankComponent(new PlayerTank(PlayerType.PLAYER_1)));
-        playerTank.add(createPlayer1KeyCodeComponent(playerTank));
-        addToScene(playerTank);
+    private boolean canGenerate(int x, int y, int w, int h) {
+        List<GameEntity> tiles = filter(GameType.TILE);
+        for (GameEntity tile : tiles) {
+            TileComponent component = tile.get(TileComponent.class);
+            if (component.getType() == 1 || component.getType() == 2 || component.getType() == 4) {
+                if (tile.getHitbox().intersects(x, y, w, h)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private Component createPlayer1KeyCodeComponent(GameEntity playerTank) {
@@ -96,25 +119,6 @@ public class LevelScene extends Scene {
         };
     }
 
-    public boolean traversalFourPoints(float x, float y, Function<float[], Boolean> handler) {
-        float tempX = x, tempY = y;
-        for (int i = 0; i < 4; i++) {
-            if (i == 1) {
-                tempX += 28;
-            }
-            if (i == 2) {
-                tempY += 28;
-            }
-            if (i == 3) {
-                tempX -= 28;
-            }
-            if (!handler.apply(new float[]{tempX, tempY})) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void setGrid(int[][] grid) {
         GameEntity tileItem;
         for (int y = 0; y < grid.length; y++) {
@@ -132,7 +136,11 @@ public class LevelScene extends Scene {
                 addToScene(tileItem);
             }
         }
+
+        randomEnemies();
     }
+
+
 
     private GameObjectType[] getTileType(int type) {
         switch (type) {
@@ -169,5 +177,16 @@ public class LevelScene extends Scene {
 
     public static Scene get() {
         return levelScene;
+    }
+
+    private int addEnemiesTimeIndex = 0;
+
+    @Override
+    protected void doUpdateEntityAfter(float dt) {
+        if (addEnemiesTimeIndex >= (1 / dt) * 10) {
+            randomEnemies();
+            addEnemiesTimeIndex = 0;
+        }
+        addEnemiesTimeIndex++;
     }
 }

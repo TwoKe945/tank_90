@@ -149,7 +149,7 @@ public class TankComponent extends Component {
     }
 
     private void updateApproachCollisionRect() {
-        int offset = dir == Dir.LEFT || dir == Dir.UP ? approachCollisionSize : 1;
+        float offset = dir == Dir.LEFT || dir == Dir.UP ? approachCollisionSize : 1;
         int offsetCenterX = 0;
         int offsetCenterY = 0;
         if (dir.getVecY() == 0) {
@@ -157,10 +157,10 @@ public class TankComponent extends Component {
         } else if (dir.getVecX() == 0) {
             offsetCenterX = (entity.getTransform().getSize().width - 10) / 2;
         }
-        approachCollisionRect.x = (int)entity.getTransform().getPosition().x + dir.getVecX() * entity.getTransform().getSize().width * offset + offsetCenterX;
-        approachCollisionRect.y = (int)entity.getTransform().getPosition().y + dir.getVecY() * entity.getTransform().getSize().height * offset + offsetCenterY;
-        approachCollisionRect.width = dir.getVecX() == 0 ? 10 : entity.getTransform().getSize().width + Math.abs(dir.getVecX()) * (approachCollisionSize - 1) * entity.getTransform().getSize().width;
-        approachCollisionRect.height = dir.getVecY() == 0 ? 10 :  entity.getTransform().getSize().height  + Math.abs(dir.getVecY()) * (approachCollisionSize - 1) * entity.getTransform().getSize().height;
+        approachCollisionRect.x = (int)entity.getTransform().getPosition().x + (int)(dir.getVecX() * entity.getTransform().getSize().width * offset) + offsetCenterX;
+        approachCollisionRect.y = (int)entity.getTransform().getPosition().y + (int)(dir.getVecY() * entity.getTransform().getSize().height * offset) + offsetCenterY;
+        approachCollisionRect.width = dir.getVecX() == 0 ? 10 : entity.getTransform().getSize().width + (int)(Math.abs(dir.getVecX()) * (approachCollisionSize - 1) * entity.getTransform().getSize().width);
+        approachCollisionRect.height = dir.getVecY() == 0 ? 10 :  entity.getTransform().getSize().height  + (int)(Math.abs(dir.getVecY()) * (approachCollisionSize - 1) * entity.getTransform().getSize().height);
     }
 
 
@@ -195,7 +195,7 @@ public class TankComponent extends Component {
     }
 
     private boolean isApproachCollision = false;
-    private int approachCollisionSize = 2;
+    private float approachCollisionSize = 3;
     private Rectangle approachCollisionRect;
 
     private boolean collisionDetection(float tankX, float tankY) {
@@ -208,7 +208,7 @@ public class TankComponent extends Component {
             component = gameEntity.get(TileComponent.class);
             if (component.getType() == 1 || component.getType() == 2 || component.getType() == 4) {
                 if(component.getType() == 1 || component.getType() == 4) {
-                    if (approachCollisionRect.intersects(approachCollisionRect.x,
+                    if (gameEntity.getHitbox().intersects(approachCollisionRect.x,
                             approachCollisionRect.y,
                             approachCollisionRect.width,
                             approachCollisionRect.height)) {
@@ -224,7 +224,11 @@ public class TankComponent extends Component {
             }
         }
 
-        if (!PLAYGROUND_RECT.contains(approachCollisionRect)) {
+        if (!PLAYGROUND_RECT.contains(approachCollisionRect.x,
+                approachCollisionRect.y,
+                approachCollisionRect.width,
+                approachCollisionRect.height
+                )) {
             isApproachCollision = true;
         }
         return true;

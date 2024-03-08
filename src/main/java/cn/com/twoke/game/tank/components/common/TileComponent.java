@@ -20,6 +20,8 @@ public class TileComponent extends Component {
         this.type = type;
         if (type == 6) {
             tileImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_FLAG);
+        } else if (type == 2) {
+            tileImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_SEA_ANIM);
         } else {
             tileImage = AssetPool.TILE_SPRITE_IMG.getSubimage( (type - 1) * Settings.DEFAULT_TILE_WIDTH,0,Settings.DEFAULT_TILE_WIDTH, Settings.DEFAULT_TILE_HEIGHT);
         }
@@ -29,18 +31,38 @@ public class TileComponent extends Component {
         return new TileComponent(index);
     }
 
+    private int aniIdx = 0;
+    private int idx = 0;
+
     @Override
     public void render(Graphics g) {
-        g.drawImage(tileImage,
-                (int) entity.getTransform().getPosition().x, (int)entity.getTransform().getPosition().y,
-                entity.getTransform().getSize().width,
-                entity.getTransform().getSize().height, null);
+        if (type == 2) {
+            g.drawImage(tileImage.getSubimage((idx % 2) * 24, 0, 24, 24),
+                    (int) entity.getTransform().getPosition().x, (int)entity.getTransform().getPosition().y,
+                    entity.getTransform().getSize().width,
+                    entity.getTransform().getSize().height, null);
+        } else {
+            g.drawImage(tileImage,
+                    (int) entity.getTransform().getPosition().x, (int)entity.getTransform().getPosition().y,
+                    entity.getTransform().getSize().width,
+                    entity.getTransform().getSize().height, null);
+        }
+
         debug(() -> {
             g.setColor(Color.red);
             g.drawRect((int) entity.getTransform().getPosition().x, (int)entity.getTransform().getPosition().y,
                     entity.getTransform().getSize().width,
                     entity.getTransform().getSize().height);
         });
+    }
+
+    @Override
+    public void update(float dt) {
+        if (aniIdx > 200) {
+            aniIdx = 0;
+            idx ++ ;
+        }
+        aniIdx++;
     }
 
     public int getX() {

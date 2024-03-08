@@ -68,7 +68,6 @@ public class AnimationComponent extends Component {
     public void render(Graphics g) {
         if (completed) return;
         int idx = animationFrameIndex % numberOfAnimationsFrame;
-        System.out.println(width);
         g.drawImage(animationImage.getSubimage(idx * width,0, width, height), (int)entity.getTransform().getPosition().x + offsetX,
                 (int)entity.getTransform().getPosition().y + offsetY , (int)(width * Settings.SCALE), (int)(height * Settings.SCALE), null);
     }

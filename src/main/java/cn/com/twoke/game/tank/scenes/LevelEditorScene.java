@@ -8,10 +8,12 @@ import cn.com.twoke.game.tank.components.input.MouseMotionComponent;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
+import cn.com.twoke.game.tank.util.LevelUtil;
 import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class LevelEditorScene extends Scene {
 
@@ -99,7 +101,7 @@ public class LevelEditorScene extends Scene {
 
         GameEntity resetButton = new GameEntity("resetButton", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
-                        Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 8 + 40 * 7 ),
+                        Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 9 + 40 * 7 + 20  ),
                 new Dimension(100,40)
         ));
         resetButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
@@ -111,7 +113,7 @@ public class LevelEditorScene extends Scene {
 
         GameEntity backMenuButton = new GameEntity("backMenuButton", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
-                        Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 9 + 40 * 7 + 20 ),
+                        Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 8 + 40 * 7 ),
                 new Dimension(100,40)
         ));
         backMenuButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
@@ -120,6 +122,22 @@ public class LevelEditorScene extends Scene {
             game.changeScene(0);
         }));
         addToScene(backMenuButton);
+
+        GameEntity saveMenuButton = new GameEntity("saveMenuButton", new Transform(
+                new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
+                        Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 10 + 40 * 8 ),
+                new Dimension(100,40)
+        ));
+        saveMenuButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
+        saveMenuButton.add(new TextButtonComponent("保存"));
+        saveMenuButton.add(new MouseMotionComponent().onClick(MouseEvent.BUTTON1, (e, entity) -> {
+            try {
+                LevelUtil.saveLevel(gridPlaygroundComponent.getGridData());
+            }catch (IOException eve) {
+                eve.printStackTrace();
+            }
+        }));
+        addToScene(saveMenuButton);
     }
 
 

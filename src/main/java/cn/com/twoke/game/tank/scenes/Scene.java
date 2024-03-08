@@ -3,6 +3,7 @@ package cn.com.twoke.game.tank.scenes;
 import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.GameObjectType;
+import cn.com.twoke.game.tank.entity.GameType;
 import cn.com.twoke.game.tank.main.TankGame;
 
 import java.awt.*;
@@ -56,7 +57,9 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
         doRenderEntityAfter(g);
     }
 
-
+    public void anyRemove(GameObjectType...types) {
+        entities.removeIf(entity -> Arrays.stream(types).anyMatch(entity::has));
+    }
 
     public  void update(float dt) {
         doUpdate(dt);

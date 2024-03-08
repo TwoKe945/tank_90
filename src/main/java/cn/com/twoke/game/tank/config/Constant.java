@@ -13,4 +13,5 @@ public interface Constant {
     String TEXTURE_TANK_INITIALIZE = "/textures/tank/Born.png";
     String TEXTURE_TANK_PLAYER1 = "/textures/tank/Player1.png";
     String TEXTURE_TANK_PLAYER2 = "/textures/tank/Player2.png";
+    String TEXTURE_MAP_SEA_ANIM = "/textures/map/sea_anim.png";
 }

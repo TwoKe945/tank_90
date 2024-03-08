@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -145,7 +146,7 @@ public class MouseMotionComponent  extends Component implements MouseListener, M
 
     public interface MouseHandler {
 
-        void handle(MouseEvent e, GameEntity entity);
+        void handle(MouseEvent e, GameEntity entity) ;
 
     }
 
