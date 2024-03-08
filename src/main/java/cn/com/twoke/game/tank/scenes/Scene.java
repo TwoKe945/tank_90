@@ -2,13 +2,14 @@ package cn.com.twoke.game.tank.scenes;
 
 import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
+import cn.com.twoke.game.tank.entity.GameObjectType;
 import cn.com.twoke.game.tank.main.TankGame;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class Scene implements MouseListener, MouseMotionListener, KeyListener {
 
@@ -33,6 +34,7 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
     public void addToScene(GameEntity entity) {
         if (Objects.isNull(entity)) return;
         entities.add(entity);
+        Collections.sort(entities);
         for (Component component : entity.getAllComponents()) {
             if (MouseListener.class.isAssignableFrom(component.getClass())) {
                 this.mouseListeners.add((MouseListener) component);
@@ -140,5 +142,9 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
         for (KeyListener keyListener : keyListeners) {
             keyListener.keyReleased(e);
         }
+    }
+
+    public List<GameEntity> filter(GameObjectType ...types) {
+        return entities.stream().filter(entity -> Arrays.stream(types).anyMatch(entity::has)).collect(Collectors.toList());
     }
 }

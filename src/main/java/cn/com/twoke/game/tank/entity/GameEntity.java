@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 游戏实体
  */
-public class GameEntity {
+public class GameEntity implements Comparable<GameEntity> {
     /**
      * 游戏实体名称
      */
@@ -27,6 +27,8 @@ public class GameEntity {
 
     private int zIndex = 0;
 
+    private int type = 0;
+
     public String getName() {
         return name;
     }
@@ -37,6 +39,16 @@ public class GameEntity {
         this.components = new ArrayList<>();
         this.properties = new Properties();
         this.zIndex = 0;
+        this.type = 0;
+    }
+
+    public GameEntity(String name, Transform transform, GameObjectType... types) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.properties = new Properties();
+        this.zIndex = 0;
+        this.type = GameObjectType.with(types);
     }
 
     public GameEntity(String name, Transform transform, int zIndex) {
@@ -45,6 +57,20 @@ public class GameEntity {
         this.components = new ArrayList<>();
         this.properties = new Properties();
         this.zIndex = zIndex;
+        this.type = 0;
+    }
+
+    public GameEntity(String name, Transform transform, int zIndex, GameObjectType... types) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.properties = new Properties();
+        this.zIndex = zIndex;
+        this.type = GameObjectType.with(types);
+    }
+
+    public boolean has(GameObjectType type) {
+        return GameObjectType.has(this.type, type);
     }
 
     public int getzIndex() {
@@ -101,5 +127,10 @@ public class GameEntity {
      */
     public List<Component> getAllComponents() {
         return components;
+    }
+
+    @Override
+    public int compareTo(GameEntity o) {
+        return Integer.compare(this.zIndex, o.zIndex);
     }
 }

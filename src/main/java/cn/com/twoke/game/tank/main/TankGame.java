@@ -7,6 +7,7 @@ import cn.com.twoke.game.tank.scenes.LevelScene;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 /**
  * 坦克游戏
@@ -17,6 +18,19 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
     private final GamePanel panel;
     private Scene currentScene;
     private Thread renderThread;
+
+    private static TankGame tankGame;
+
+    public static TankGame get() {
+        if (Objects.isNull(tankGame)) {
+            tankGame = new TankGame();
+        }
+        return tankGame;
+    }
+
+    public static Scene getCurrentScene() {
+        return get().currentScene;
+    }
 
     public TankGame() {
         changeScene(0);

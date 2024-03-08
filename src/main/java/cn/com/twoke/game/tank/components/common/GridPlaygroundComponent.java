@@ -78,11 +78,14 @@ public class GridPlaygroundComponent extends Component {
                             Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
                             Settings.TILE_WIDTH,
                             Settings.TILE_HEIGHT, null);
-                    g.setColor(Color.red);
-                    g.drawRect(Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
-                            Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
-                            Settings.TILE_WIDTH,
-                            Settings.TILE_HEIGHT);
+                    int finalX = x, finalY = y;
+                    debug(() -> {
+                        g.setColor(Color.red);
+                        g.drawRect(Settings.PLAYGROUND_MARGIN_LEFT + finalX * Settings.TILE_WIDTH,
+                                Settings.PLAYGROUND_MARGIN_TOP + finalY * Settings.TILE_HEIGHT,
+                                Settings.TILE_WIDTH,
+                                Settings.TILE_HEIGHT);
+                    });
                 } else {
                     g.drawImage(AssetPool.loadTexture(Constant.TEXTURE_MAP_FLAG),
                             Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,

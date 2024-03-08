@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        new TankGame();
+        TankGame.get();
     }
 
     public static void convertImage(File imageFile) {

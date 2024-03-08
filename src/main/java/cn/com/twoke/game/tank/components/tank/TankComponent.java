@@ -4,17 +4,21 @@ import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.components.bullet.BulletManager;
 import cn.com.twoke.game.tank.components.common.GridPlaygroundComponent;
 import cn.com.twoke.game.tank.components.bullet.BulletComponent;
+import cn.com.twoke.game.tank.components.common.TileComponent;
 import cn.com.twoke.game.tank.config.*;
 import cn.com.twoke.game.tank.config.Dir;
 import cn.com.twoke.game.tank.entity.GameEntity;
+import cn.com.twoke.game.tank.entity.GameType;
 import cn.com.twoke.game.tank.entity.tank.TankEntity;
 import cn.com.twoke.game.tank.entity.Transform;
+import cn.com.twoke.game.tank.main.TankGame;
 import cn.com.twoke.game.tank.util.AssetPool;
 import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 import static cn.com.twoke.game.tank.config.Settings.TANK_INITIALIZE_FRAME_HEIGHT;
@@ -26,7 +30,6 @@ import static cn.com.twoke.game.tank.config.Settings.TANK_INITIALIZE_FRAME_WIDTH
 public class TankComponent extends Component {
 
     private Dir dir = Dir.UP;
-    private final GridPlaygroundComponent playground;
     private final TankEntity tankEntity;
     private BufferedImage tankInitializeImage;
     /**
@@ -46,9 +49,7 @@ public class TankComponent extends Component {
     private BulletManager bulletManager;
 
 
-    public  TankComponent(GridPlaygroundComponent playground, TankEntity tankEntity) {
-
-        this.playground = playground;
+    public  TankComponent(TankEntity tankEntity) {
         this.tankEntity = tankEntity;
         this.tankEntity.setComponent(this);
         this.approachCollisionRect = new Rectangle();
@@ -199,33 +200,33 @@ public class TankComponent extends Component {
 
     private boolean collisionDetection(float tankX, float tankY) {
         isApproachCollision = false;
-        int[][] gridData = playground.getGridData();
         Rectangle hitbox = entity.getHitbox();
-        for (int y = 0; y < gridData.length; y++) {
-            for (int x = 0; x < gridData[y].length; x++) {
-                if (gridData[y][x] == 1 || gridData[y][x] == 4) {
-                    if (approachCollisionRect.intersects(Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
-                            Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
-                            Settings.TILE_WIDTH,
-                            Settings.TILE_HEIGHT)) {
+        List<GameEntity> entities = TankGame.getCurrentScene().filter(GameType.TILE);
+        TileComponent component;
+        for (int i = 0; i < entities.size(); i++) {
+            GameEntity gameEntity = entities.get(i);
+            component = gameEntity.get(TileComponent.class);
+            if (component.getType() == 1 || component.getType() == 2 || component.getType() == 4) {
+                if(component.getType() == 1 || component.getType() == 4) {
+                    if (approachCollisionRect.intersects(approachCollisionRect.x,
+                            approachCollisionRect.y,
+                            approachCollisionRect.width,
+                            approachCollisionRect.height)) {
                         isApproachCollision = true;
                     }
                 }
-                if (gridData[y][x] == 1 || gridData[y][x] == 2 || gridData[y][x] == 4) {
-                    if (intersects(tankX, tankY, hitbox.width, hitbox.height,
-                            Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
-                            Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
-                            Settings.TILE_WIDTH,
-                            Settings.TILE_HEIGHT)) {
-                        return false;
-                    }
+                if (intersects(tankX, tankY, hitbox.width, hitbox.height,gameEntity.getTransform().getPosition().x,
+                        gameEntity.getTransform().getPosition().y,
+                        gameEntity.getTransform().getSize().width,
+                        gameEntity.getTransform().getSize().height)) {
+                    return false;
                 }
             }
         }
+
         if (!PLAYGROUND_RECT.contains(approachCollisionRect)) {
             isApproachCollision = true;
         }
-
         return true;
     }
 
@@ -303,19 +304,19 @@ public class TankComponent extends Component {
         // 判断是否超出边界
         if (!PLAYGROUND_RECT.contains(new Rectangle(bulletComponent.getNextX(), bulletComponent.getNextY(),
                 bulletComponent.getWidth(), bulletComponent.getHeight()))) return false;
-        int[][] gridData = playground.getGridData();
         int bulletX = bulletComponent.getNextX();
         int bulletY = bulletComponent.getNextY();
-        for (int y = 0; y < gridData.length; y++) {
-            for (int x = 0; x < gridData[y].length; x++) {
-                if (gridData[y][x] == 1 || gridData[y][x] == 4) {
-                    if (intersects(bulletX, bulletY, 10, 10,
-                            Settings.PLAYGROUND_MARGIN_LEFT + x * Settings.TILE_WIDTH,
-                            Settings.PLAYGROUND_MARGIN_TOP + y * Settings.TILE_HEIGHT,
-                            Settings.TILE_WIDTH,
-                            Settings.TILE_HEIGHT)) {
-                        return false;
-                    }
+        List<GameEntity> entities = TankGame.getCurrentScene().filter(GameType.TILE);
+        for (int i = 0; i < entities.size(); i++) {
+            GameEntity gameEntity = entities.get(i);
+            TileComponent component = gameEntity.get(TileComponent.class);
+            if (component.getType() == 1 || component.getType() == 4) {
+                if (intersects(bulletX, bulletY, 10, 10,
+                        gameEntity.getTransform().getPosition().x,
+                        gameEntity.getTransform().getPosition().y,
+                        gameEntity.getTransform().getSize().width,
+                        gameEntity.getTransform().getSize().height)) {
+                    return false;
                 }
             }
         }
