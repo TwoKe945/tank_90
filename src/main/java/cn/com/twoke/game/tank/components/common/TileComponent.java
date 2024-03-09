@@ -22,6 +22,8 @@ public class TileComponent extends Component {
             tileImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_FLAG);
         } else if (type == 2) {
             tileImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_SEA_ANIM);
+        } else if (type == 7) {
+            tileImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_FLAG_FAILED);
         } else {
             tileImage = AssetPool.TILE_SPRITE_IMG.getSubimage( (type - 1) * Settings.DEFAULT_TILE_WIDTH,0,Settings.DEFAULT_TILE_WIDTH, Settings.DEFAULT_TILE_HEIGHT);
         }

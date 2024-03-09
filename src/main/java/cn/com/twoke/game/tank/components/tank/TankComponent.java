@@ -9,6 +9,7 @@ import cn.com.twoke.game.tank.config.*;
 import cn.com.twoke.game.tank.config.Dir;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.GameType;
+import cn.com.twoke.game.tank.entity.tank.PlayerTank;
 import cn.com.twoke.game.tank.entity.tank.TankEntity;
 import cn.com.twoke.game.tank.entity.Transform;
 import cn.com.twoke.game.tank.main.TankGame;
@@ -21,8 +22,7 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Function;
 
-import static cn.com.twoke.game.tank.config.Settings.TANK_INITIALIZE_FRAME_HEIGHT;
-import static cn.com.twoke.game.tank.config.Settings.TANK_INITIALIZE_FRAME_WIDTH;
+import static cn.com.twoke.game.tank.config.Settings.*;
 
 /**
  * 坦克
@@ -272,13 +272,13 @@ public class TankComponent extends Component {
         float tempX = x, tempY = y;
         for (int i = 0; i < 4; i++) {
             if (i == 1) {
-                tempX += 28;
+                tempX += TANK_WIDTH;
             }
             if (i == 2) {
-                tempY += 28;
+                tempY += TANK_HEIGHT;
             }
             if (i == 3) {
-                tempX -= 28;
+                tempX -= TANK_WIDTH;
             }
             if (!handler.apply(new float[]{tempX, tempY})) {
                 return false;
@@ -365,6 +365,18 @@ public class TankComponent extends Component {
                 GameEntity gameEntity = players.get(i);
                 if (gameEntity.getHitbox().intersects(bulletX, bulletY, bulletComponent.getWidth(), bulletComponent.getHeight())) {
                     gameEntity.get(TankComponent.class).restart();
+                    ((PlayerTank)gameEntity.get(TankComponent.class).getTankEntity()).addHealth(-1);
+                    return false;
+                }
+            }
+            List<GameEntity> flags = TankGame.getCurrentScene().filter(GameType.FLAG);
+            for (GameEntity gameEntity : flags) {
+                if (gameEntity.getHitbox().intersects(bulletX, bulletY, bulletComponent.getWidth(), bulletComponent.getHeight())) {
+                    TankGame.getCurrentScene().getEntities().remove(gameEntity);
+
+                    GameEntity gameEntity1 = new GameEntity("errorFlag", gameEntity.getTransform());
+                    gameEntity1.add(TileComponent.create(7));
+                    TankGame.getCurrentScene().addToScene(gameEntity1);
                     return false;
                 }
             }
@@ -376,7 +388,7 @@ public class TankComponent extends Component {
         this.died = true;
     }
 
-    private void restart() {
+    public void restart() {
         this.dir = Dir.valueOf(initDir);
         this.isInitialized = false;
         entity.getTransform().setPosition(initX, initY);
@@ -389,5 +401,9 @@ public class TankComponent extends Component {
 
     public int bulletCountNumber() {
         return bulletManager.size();
+    }
+
+    public TankEntity getTankEntity() {
+        return tankEntity;
     }
 }

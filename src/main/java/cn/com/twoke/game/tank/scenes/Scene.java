@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public abstract class Scene implements MouseListener, MouseMotionListener, KeyListener {
 
-    private final List<GameEntity> entities;
+    protected final List<GameEntity> entities;
     private List<MouseListener> mouseListeners;
     private List<MouseMotionListener> mouseMotionListeners;
     private List<KeyListener> keyListeners;

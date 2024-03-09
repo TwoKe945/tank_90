@@ -29,4 +29,7 @@ public class Settings {
     public static final int TANK_INITIALIZE_FRAME_WIDTH = 32;
     public static final int TANK_INITIALIZE_FRAME_HEIGHT = 32;
 
+    public static final int TANK_WIDTH = 32;
+    public static final int TANK_HEIGHT = 32;
+
 }

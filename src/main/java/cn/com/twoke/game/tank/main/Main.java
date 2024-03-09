@@ -11,6 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         TankGame.get();
+//        convertImage(new File("E:\\Workspace\\Java\\Playground\\Tank\\src\\main\\resources\\textures\\ui\\UIView.png"));
     }
 
     public static void convertImage(File imageFile) {
@@ -78,12 +79,12 @@ public class Main {
      * @return false|true
      */
     public static boolean includeColor(int color) {
-        return color == 0xff000000;
-//        int red = (color & 0xFF0000) >> 16;
-//        int green = (color & 0x00FF00) >> 8;
-//        int blue = (color & 0x0000FF);
-//        int color_range = 215;
-//        return (red >= color_range && green >= color_range && blue >= color_range);
+//        return color == 0xff000000;
+        int red = (color & 0xFF0000) >> 16;
+        int green = (color & 0x00FF00) >> 8;
+        int blue = (color & 0x0000FF);
+        int color_range = 215;
+        return (red >= color_range && green >= color_range && blue >= color_range);
     }
 
 }

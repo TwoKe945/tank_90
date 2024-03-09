@@ -11,6 +11,19 @@ import java.awt.image.BufferedImage;
 
 public class PlayerTank extends AbstractTankEntity {
 
+    public static final int MAX_HEALTH = 3;
+
+    private int health = MAX_HEALTH;
+
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     private static final BufferedImage[][] PLAYER_TANK_TEXTURES;
     static {
         PLAYER_TANK_TEXTURES = new BufferedImage[2][4 * 8];
@@ -59,5 +72,9 @@ public class PlayerTank extends AbstractTankEntity {
         component.setAutoTurn(false); // 关闭自动转向
         component.setMoving(false); // 关闭移动
         component.setAutoFire(false); // 关闭自动发射子弹
+    }
+
+    public void addHealth(int value) {
+        this.health += value;
     }
 }
