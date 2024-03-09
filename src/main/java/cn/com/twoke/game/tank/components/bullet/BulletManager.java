@@ -24,6 +24,11 @@ public class BulletManager extends Component {
         this.bulletBuilder = new BulletEntityBuilder(tankComponent);
     }
 
+
+    public List<BulletComponent> getBulletComponents() {
+        return bulletComponents;
+    }
+
     @Override
     public void render(Graphics g) {
         for (int i = 0; i < bulletComponents.size(); i++) {
@@ -47,14 +52,13 @@ public class BulletManager extends Component {
     }
 
     private void updateBullet(float dt) {
-        Iterator<BulletComponent> iterator = bulletComponents.iterator();
-        while (iterator.hasNext()) {
-            BulletComponent bulletComponent = iterator.next();
+        for (int i = 0; i < bulletComponents.size(); i++) {
+            BulletComponent bulletComponent = bulletComponents.get(i);
             if (tankComponent.canMove(bulletComponent)) {
                 bulletComponent.update(dt);
             } else {
                 bulletComponent.stop();
-                iterator.remove();
+                bulletComponents.remove(bulletComponent);
                 explode(bulletComponent.getX(), bulletComponent.getY());
             }
         }
@@ -62,6 +66,11 @@ public class BulletManager extends Component {
 
     private List<GameEntity> explodeAnimations = new ArrayList<>();
 
+    public void explode(BulletComponent bulletComponent) {
+        bulletComponent.stop();
+        bulletComponents.remove(bulletComponent);
+        explode(bulletComponent.getX(), bulletComponent.getY());
+    }
 
     private void explode(int x, int y) {
         boolean hasExplode = false;

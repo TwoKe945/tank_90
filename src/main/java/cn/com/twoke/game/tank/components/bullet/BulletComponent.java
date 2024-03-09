@@ -3,6 +3,7 @@ package cn.com.twoke.game.tank.components.bullet;
 import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.components.tank.TankComponent;
 import cn.com.twoke.game.tank.config.Dir;
+import cn.com.twoke.game.tank.entity.GameType;
 import cn.com.twoke.game.tank.entity.Transform;
 import cn.com.twoke.game.tank.util.AssetPool;
 import cn.com.twoke.game.tank.util.ImageUtil;
@@ -32,6 +33,9 @@ public class BulletComponent extends Component {
 
     public BulletComponent(TankComponent component) {
         this.component = component;
+        if (component.getEntity().has(GameType.ENEMY)) {
+            moveSpeed = 0.6f;
+        }
         this.dir = component.getDir();
         initBullet();
     }

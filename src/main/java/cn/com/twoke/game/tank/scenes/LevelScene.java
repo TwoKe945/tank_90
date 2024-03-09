@@ -26,6 +26,10 @@ public class LevelScene extends Scene {
     private static final int MAX_ENEMIES_SIZE = 20;
     private int enemiesSize = 0;
 
+    private boolean gameOver = false;
+
+    private boolean pause = false;
+
     public LevelScene() {
         GameEntity playground = new GameEntity("Playground", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT, Settings.PLAYGROUND_MARGIN_TOP),
@@ -43,8 +47,8 @@ public class LevelScene extends Scene {
         // 玩家1
         GameEntity playerTank = new GameEntity("Player1",
                 new Transform(
-                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + 9 * Settings.TILE_WIDTH + 19, 19 +(Settings.PLAYGROUND_ROW - 2) * Settings.TILE_HEIGHT + Settings.PLAYGROUND_MARGIN_TOP),
-                        new Dimension(28, 28)
+                        new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + 9 * Settings.TILE_WIDTH + 4, 4 +(Settings.PLAYGROUND_ROW - 2) * Settings.TILE_HEIGHT + Settings.PLAYGROUND_MARGIN_TOP),
+                        new Dimension(40, 40)
                 ), 1, GameType.TANK, GameType.PLAYER);
         playerTank.add(new TankComponent(new PlayerTank(PlayerType.PLAYER_1)));
         playerTank.add(createPlayer1KeyCodeComponent(playerTank));
@@ -58,15 +62,15 @@ public class LevelScene extends Scene {
         if (enemiesSize >= MAX_ENEMIES_SIZE) return;
         int x, y;
         for (int i = 0; i < 1;) {
-            x = Settings.PLAYGROUND_MARGIN_LEFT + random.nextInt(Settings.PLAYGROUND_WIDTH - 28);
+            x = Settings.PLAYGROUND_MARGIN_LEFT + random.nextInt(Settings.PLAYGROUND_WIDTH - 40);
             y = Settings.PLAYGROUND_MARGIN_TOP + random.nextInt(Settings.PLAYGROUND_HEIGHT / 4);
-            if (!canGenerate(x, y, 28, 28)) {
+            if (!canGenerate(x, y, 40, 40)) {
                 continue;
             }
             GameEntity entity = new GameEntity("EnemyTank" + 0, new Transform(
                     new Vec2f(x, y),
-                    new Dimension(28, 28)
-            ), 1);
+                    new Dimension(40, 40)
+            ), 1, GameType.TANK, GameType.ENEMY);
             TankComponent tankComponent = new TankComponent(new EnemyTank());
             entity.add(tankComponent);
             addToScene(entity);
@@ -188,5 +192,24 @@ public class LevelScene extends Scene {
             addEnemiesTimeIndex = 0;
         }
         addEnemiesTimeIndex++;
+    }
+
+    @Override
+    public void update(float dt) {
+        if (!pause) {
+            super.update(dt);
+        }
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }
+
+    public boolean isPause() {
+        return pause;
     }
 }

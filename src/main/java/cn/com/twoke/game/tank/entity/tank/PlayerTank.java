@@ -33,10 +33,12 @@ public class PlayerTank extends AbstractTankEntity {
     public PlayerTank(PlayerType type) {
         this.type = type;
         this.level = PlayerLevel.LEVEL_1;
+        this.movingSpeed = 0.5f;
     }
     public PlayerTank(PlayerType type, PlayerLevel level) {
         this.type = type;
         this.level = level;
+        this.movingSpeed = 0.5f;
     }
 
     /**

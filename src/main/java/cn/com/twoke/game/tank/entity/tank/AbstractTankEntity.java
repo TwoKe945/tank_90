@@ -6,7 +6,12 @@ public abstract class AbstractTankEntity implements TankEntity {
     protected TankComponent component;
     protected TankType type;
     protected TankLevel level;
-    protected float movingSpeed = 0.5f;
+    protected float movingSpeed;
+
+    AbstractTankEntity() {
+        this.movingSpeed = 0.25f;
+    }
+
 
     @Override
     public TankType getType() {

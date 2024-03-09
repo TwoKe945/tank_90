@@ -1,10 +1,16 @@
 package cn.com.twoke.game.tank.main;
 
 import cn.com.twoke.game.tank.config.Constant;
+import cn.com.twoke.game.tank.scenes.LevelScene;
+import cn.com.twoke.game.tank.scenes.Scene;
 import cn.com.twoke.game.tank.util.AssetPool;
 import cn.com.twoke.game.tank.util.ResourceLoader;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowStateListener;
 
 /**
  * 游戏窗口

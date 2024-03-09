@@ -45,11 +45,13 @@ public class TankComponent extends Component {
      * 是否移动中
      */
     private boolean isMoving = true;
+    private boolean died = false;
     private int movingFrameIndex = 0;
     private BulletManager bulletManager;
 
 
     public  TankComponent(TankEntity tankEntity) {
+        this.initDir = this.dir.name();
         this.tankEntity = tankEntity;
         this.tankEntity.setComponent(this);
         this.approachCollisionRect = new Rectangle();
@@ -60,6 +62,8 @@ public class TankComponent extends Component {
     public void setEntity(GameEntity entity) {
         super.setEntity(entity);
         this.bulletManager = new BulletManager(this);
+        this.initX = (int)entity.getTransform().getPosition().x;
+        this.initY = (int)entity.getTransform().getPosition().y;
     }
 
     @Override
@@ -67,7 +71,7 @@ public class TankComponent extends Component {
         // 绘制坦克生成动画
         drawAnimationForInitializingTank(g);
         Optional.ofNullable(bulletManager).ifPresent(manager -> manager.render(g));
-        if(isInitialized) {
+        if(isInitialized && !died) {
             // 绘制坦克
             drawTank(g);
             debug(() -> {
@@ -102,6 +106,10 @@ public class TankComponent extends Component {
     private static final int INITIALIZE_ANIMATION_FRAME_COUNT = 4; // 动画帧数
     private static final int SINGLE_FRAME_RUNTIME_COUNT = 10; // 单帧动画运行次数
 
+    private int initX;
+    private int initY;
+    private String initDir;
+
     /**
      * 绘制初始化坦克动画
      * @param g
@@ -135,6 +143,13 @@ public class TankComponent extends Component {
 
     @Override
     public void update(float dt) {
+        Optional.ofNullable(bulletManager).ifPresent(manager -> manager.update(dt));
+        if (died)  {
+            if (Objects.nonNull(bulletManager) && bulletManager.size() == 0) {
+                TankGame.getCurrentScene().getEntities().remove(entity);
+            }
+            return;
+        }
         if (isInitialized && isMoving) {
             if (movingFrameIndex + 1 > 1) {
                 movingFrameIndex = 0;
@@ -145,7 +160,6 @@ public class TankComponent extends Component {
             updateBullet();
         }
         updateApproachCollisionRect();
-        Optional.ofNullable(bulletManager).ifPresent(manager -> manager.update(dt));
     }
 
     private void updateApproachCollisionRect() {
@@ -311,20 +325,66 @@ public class TankComponent extends Component {
         int bulletX = bulletComponent.getNextX();
         int bulletY = bulletComponent.getNextY();
         List<GameEntity> entities = TankGame.getCurrentScene().filter(GameType.TILE);
+        // 子弹和砖块发生碰撞
         for (int i = 0; i < entities.size(); i++) {
             GameEntity gameEntity = entities.get(i);
             TileComponent component = gameEntity.get(TileComponent.class);
             if (component.getType() == 1 || component.getType() == 4) {
-                if (intersects(bulletX, bulletY, 10, 10,
-                        gameEntity.getTransform().getPosition().x,
-                        gameEntity.getTransform().getPosition().y,
-                        gameEntity.getTransform().getSize().width,
-                        gameEntity.getTransform().getSize().height)) {
+                if (gameEntity.getHitbox().intersects(bulletX, bulletY, bulletComponent.getWidth(), bulletComponent.getHeight())) {
+                    if (component.getType() == 1) {
+                        TankGame.getCurrentScene().getEntities().remove(gameEntity);
+                    }
+                    return false;
+                }
+            }
+        }
+//      子弹与坦克发生碰撞
+        if ( entity.has(GameType.PLAYER)){
+            List<GameEntity> enemies = TankGame.getCurrentScene().filter(GameType.ENEMY);
+            for (int i = 0; i < enemies.size(); i++) {
+                GameEntity gameEntity = enemies.get(i);
+                TankComponent tankComponent = gameEntity.get(TankComponent.class);
+                for (BulletComponent component : tankComponent.getBulletManager().getBulletComponents()) {
+                    if (intersects(bulletX, bulletY, bulletComponent.getWidth(), bulletComponent.getHeight(),
+                            component.getX(), component.getY(), component.getWidth(), component.getHeight()
+                    )) {
+                        tankComponent.getBulletManager().explode(component);
+                        return false;
+                    }
+                }
+                if (gameEntity.getHitbox().intersects(bulletX, bulletY, bulletComponent.getWidth(), bulletComponent.getHeight())
+                    && !tankComponent.died
+                ) {
+                    gameEntity.get(TankComponent.class).death();
+                    return false;
+                }
+            }
+        } else if (entity.has(GameType.ENEMY)) {
+            List<GameEntity> players = TankGame.getCurrentScene().filter(GameType.PLAYER);
+            for (int i = 0; i < players.size(); i++) {
+                GameEntity gameEntity = players.get(i);
+                if (gameEntity.getHitbox().intersects(bulletX, bulletY, bulletComponent.getWidth(), bulletComponent.getHeight())) {
+                    gameEntity.get(TankComponent.class).restart();
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    private void death() {
+        this.died = true;
+    }
+
+    private void restart() {
+        this.dir = Dir.valueOf(initDir);
+        this.isInitialized = false;
+        entity.getTransform().setPosition(initX, initY);
+    }
+
+
+    public BulletManager getBulletManager() {
+        return bulletManager;
     }
 
     public int bulletCountNumber() {

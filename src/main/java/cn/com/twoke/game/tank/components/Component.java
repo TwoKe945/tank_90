@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  */
 public abstract class Component {
 
-    protected boolean DEBUG = true;
+    protected boolean DEBUG = false;
 
     protected GameEntity entity;
 
@@ -38,4 +38,5 @@ public abstract class Component {
     public GameEntity getEntity() {
         return entity;
     }
+
 }

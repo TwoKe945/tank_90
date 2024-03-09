@@ -106,7 +106,7 @@ public class WelcomeScene extends Scene {
                         .ifPresent(idx -> {
                             game.changeScene(Integer.parseInt(idx));
                             if (game.getScene() instanceof LevelScene) {
-                                ((LevelScene)game.getScene()).setGrid(LevelUtil.get(0));
+                                ((LevelScene)game.getScene()).setGrid(LevelUtil.get(1));
                             }
                         });
     }

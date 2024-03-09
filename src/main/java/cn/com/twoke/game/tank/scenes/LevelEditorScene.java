@@ -65,7 +65,7 @@ public class LevelEditorScene extends Scene {
         GameEntity showGridLines = new GameEntity("ShowGridLines", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
                         Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 6 + 40 * 6 ),
-                new Dimension(100,40)
+                new Dimension(100,30)
         ));
         showGridLines.getProps().setProperty("showGrid", "false");
         showGridLines.add(new RectangleComponent(Color.WHITE, Color.BLACK));
@@ -86,7 +86,7 @@ public class LevelEditorScene extends Scene {
         GameEntity startGameButton = new GameEntity("startGame", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
                         Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 7 + 40 * 6 + 20),
-                new Dimension(100,40)
+                new Dimension(100,30)
         ));
         startGameButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
         startGameButton.add(new TextButtonComponent("开始游戏"));
@@ -102,7 +102,7 @@ public class LevelEditorScene extends Scene {
         GameEntity resetButton = new GameEntity("resetButton", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
                         Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 9 + 40 * 7 + 20  ),
-                new Dimension(100,40)
+                new Dimension(100,30)
         ));
         resetButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
         resetButton.add(new TextButtonComponent("重置"));
@@ -114,7 +114,7 @@ public class LevelEditorScene extends Scene {
         GameEntity backMenuButton = new GameEntity("backMenuButton", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
                         Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 8 + 40 * 7 ),
-                new Dimension(100,40)
+                new Dimension(100,30)
         ));
         backMenuButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
         backMenuButton.add(new TextButtonComponent("返回菜单"));
@@ -126,7 +126,7 @@ public class LevelEditorScene extends Scene {
         GameEntity saveMenuButton = new GameEntity("saveMenuButton", new Transform(
                 new Vec2f(Settings.PLAYGROUND_MARGIN_LEFT + Settings.PLAYGROUND_WIDTH + 10,
                         Settings.PLAYGROUND_MARGIN_TOP + Settings.TILE_HEIGHT * 10 + 40 * 8 ),
-                new Dimension(100,40)
+                new Dimension(100,30)
         ));
         saveMenuButton.add(new RectangleComponent(Color.WHITE, Color.BLACK));
         saveMenuButton.add(new TextButtonComponent("保存"));

@@ -21,6 +21,10 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
 
     protected TankGame game;
 
+    public List<GameEntity> getEntities() {
+        return entities;
+    }
+
     public void setGame(TankGame game) {
         this.game = game;
     }
