@@ -2,22 +2,28 @@ package cn.com.twoke.game.tank.scenes;
 
 import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
+import cn.com.twoke.game.tank.entity.GameObjectType;
+import cn.com.twoke.game.tank.entity.GameType;
 import cn.com.twoke.game.tank.main.TankGame;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class Scene implements MouseListener, MouseMotionListener, KeyListener {
 
-    private final List<GameEntity> entities;
+    protected final List<GameEntity> entities;
     private List<MouseListener> mouseListeners;
     private List<MouseMotionListener> mouseMotionListeners;
     private List<KeyListener> keyListeners;
 
     protected TankGame game;
+
+    public List<GameEntity> getEntities() {
+        return entities;
+    }
 
     public void setGame(TankGame game) {
         this.game = game;
@@ -33,6 +39,7 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
     public void addToScene(GameEntity entity) {
         if (Objects.isNull(entity)) return;
         entities.add(entity);
+        Collections.sort(entities);
         for (Component component : entity.getAllComponents()) {
             if (MouseListener.class.isAssignableFrom(component.getClass())) {
                 this.mouseListeners.add((MouseListener) component);
@@ -54,12 +61,14 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
         doRenderEntityAfter(g);
     }
 
+    public void anyRemove(GameObjectType...types) {
+        entities.removeIf(entity -> Arrays.stream(types).anyMatch(entity::has));
+    }
 
-
-    public void update(float dt) {
+    public  void update(float dt) {
         doUpdate(dt);
-        for (GameEntity entity : entities) {
-            entity.update(dt);
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).update(dt);
         }
         doUpdateEntityAfter(dt);
     }
@@ -140,5 +149,9 @@ public abstract class Scene implements MouseListener, MouseMotionListener, KeyLi
         for (KeyListener keyListener : keyListeners) {
             keyListener.keyReleased(e);
         }
+    }
+
+    public List<GameEntity> filter(GameObjectType ...types) {
+        return entities.stream().filter(entity -> Arrays.stream(types).anyMatch(entity::has)).collect(Collectors.toList());
     }
 }

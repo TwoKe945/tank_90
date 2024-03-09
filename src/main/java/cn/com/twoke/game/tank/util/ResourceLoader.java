@@ -9,7 +9,6 @@ import java.util.Map;
 
 public abstract class ResourceLoader {
 
-    private static Map<String, BufferedImage> IMAGE_POOL = new HashMap<>();
 
 	/**
 	 * 加载图片资源
@@ -17,23 +16,22 @@ public abstract class ResourceLoader {
 	 * @return
 	 */
 	public static BufferedImage loadImage(String imagePath) {
-        if (IMAGE_POOL.containsKey(imagePath)) {
-            return IMAGE_POOL.get(imagePath);
-        }
 		BufferedImage image = null;
         InputStream is = ResourceLoader.class.getResourceAsStream(imagePath);
         try {
             image = ImageIO.read(is);
         } catch (IOException e) {
+            System.out.println(imagePath);
             e.printStackTrace();
         } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (null != is) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        IMAGE_POOL.put(imagePath, image);
         return image;
 	}
 	

@@ -3,9 +3,12 @@ package cn.com.twoke.game.tank.main;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.scenes.*;
 import cn.com.twoke.game.tank.scenes.WelcomeScene;
+import cn.com.twoke.game.tank.scenes.LevelScene;
+import cn.com.twoke.game.tank.util.LevelUtil;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 /**
  * 坦克游戏
@@ -17,6 +20,19 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
     private Scene currentScene;
     private Thread renderThread;
 
+    private static TankGame tankGame;
+
+    public static TankGame get() {
+        if (Objects.isNull(tankGame)) {
+            tankGame = new TankGame();
+        }
+        return tankGame;
+    }
+
+    public static Scene getCurrentScene() {
+        return get().currentScene;
+    }
+
     public TankGame() {
         changeScene(0);
         panel = new GamePanel(this, Settings.WIDTH, Settings.HEIGHT);
@@ -26,6 +42,11 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
         this.panel.addMouseMotionListener(this);
         this.panel.addKeyListener(this);
         startRenderLoop();
+        try {
+            LevelUtil.loadLevels();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeScene(int index) {
@@ -34,7 +55,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
                 currentScene = WelcomeScene.get();
                 break;
             case 1:
-                currentScene = LevelScene.get();
+                currentScene = new LevelScene();
                 break;
             case 2:
                 currentScene = LevelEditorScene.get();
@@ -68,7 +89,7 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
 
             if (deltaU >= 1) {
                 panel.requestFocus();
-                update((float) (timePerFrame / 1E9f));
+                update((float) (timePerUpdate / 1E9f));
                 updates++;
                 deltaU--;
             }
@@ -144,5 +165,9 @@ public class TankGame implements  Runnable, MouseMotionListener, MouseListener, 
     @Override
     public void keyReleased(KeyEvent e) {
         currentScene.keyReleased(e);
+    }
+
+    public Scene getScene() {
+        return currentScene;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 游戏实体
  */
-public class GameEntity {
+public class GameEntity implements Comparable<GameEntity> {
     /**
      * 游戏实体名称
      */
@@ -25,6 +25,10 @@ public class GameEntity {
 
     private Transform transform;
 
+    private int zIndex = 0;
+
+    private int type = 0;
+
     public String getName() {
         return name;
     }
@@ -34,6 +38,43 @@ public class GameEntity {
         this.transform = transform;
         this.components = new ArrayList<>();
         this.properties = new Properties();
+        this.zIndex = 0;
+        this.type = 0;
+    }
+
+    public GameEntity(String name, Transform transform, GameObjectType... types) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.properties = new Properties();
+        this.zIndex = 0;
+        this.type = GameObjectType.with(types);
+    }
+
+    public GameEntity(String name, Transform transform, int zIndex) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.properties = new Properties();
+        this.zIndex = zIndex;
+        this.type = 0;
+    }
+
+    public GameEntity(String name, Transform transform, int zIndex, GameObjectType... types) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.properties = new Properties();
+        this.zIndex = zIndex;
+        this.type = GameObjectType.with(types);
+    }
+
+    public boolean has(GameObjectType type) {
+        return GameObjectType.has(this.type, type);
+    }
+
+    public int getzIndex() {
+        return zIndex;
     }
 
     public Properties getProps() {
@@ -41,7 +82,8 @@ public class GameEntity {
     }
 
     public Rectangle getHitbox() {
-        return new Rectangle(transform.getPosition(), transform.getSize());
+        return new Rectangle((int)transform.getPosition().x,
+                (int)transform.getPosition().y, transform.getSize().width, transform.getSize().height);
     }
 
     public void update(float dt) {
@@ -85,5 +127,10 @@ public class GameEntity {
      */
     public List<Component> getAllComponents() {
         return components;
+    }
+
+    @Override
+    public int compareTo(GameEntity o) {
+        return Integer.compare(this.zIndex, o.zIndex);
     }
 }

@@ -1,5 +1,7 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
 
+import cn.com.twoke.game.tank.components.Component;
+import cn.com.twoke.game.tank.config.Constant;
 import cn.com.twoke.game.tank.config.Settings;
 import cn.com.twoke.game.tank.util.AssetPool;
 import cn.com.twoke.game.tank.util.ResourceLoader;
@@ -27,9 +29,9 @@ public class EditButtonComponent extends Component {
         this.minSize = minSize;
         if (editType == 0) {
             if (minSize) {
-                editImage = ResourceLoader.loadImage("/empty.png");
+                editImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_EMPTY);
             } else {
-                editImage = ResourceLoader.loadImage("/empty4.png");
+                editImage = AssetPool.loadTexture(Constant.TEXTURE_MAP_EMPTY4);
             }
         } else if (editType <= AssetPool.SPRITE_SIZE) {
             editImage = AssetPool.TILE_SPRITE_IMG.getSubimage( (editType - 1) * Settings.DEFAULT_TILE_WIDTH,0,Settings.DEFAULT_TILE_WIDTH, Settings.DEFAULT_TILE_HEIGHT);
@@ -47,11 +49,11 @@ public class EditButtonComponent extends Component {
     @Override
     public void update(float dt) {
         if (minSize) {
-            this.x = (entity.getTransform().getSize().width - Settings.TILE_WIDTH ) / 2 + entity.getTransform().getPosition().x;
-            this.y = (entity.getTransform().getSize().height - Settings.TILE_HEIGHT ) / 2 + entity.getTransform().getPosition().y;
+            this.x = (entity.getTransform().getSize().width - Settings.TILE_WIDTH ) / 2 + (int) entity.getTransform().getPosition().x;
+            this.y = (entity.getTransform().getSize().height - Settings.TILE_HEIGHT ) / 2 + (int) entity.getTransform().getPosition().y;
         } else {
-            this.x = (entity.getTransform().getSize().width - Settings.TILE_WIDTH * 2 ) / 2 + entity.getTransform().getPosition().x;
-            this.y = (entity.getTransform().getSize().height - Settings.TILE_HEIGHT * 2 ) / 2 + entity.getTransform().getPosition().y;
+            this.x = (entity.getTransform().getSize().width - Settings.TILE_WIDTH * 2 ) / 2 + (int) entity.getTransform().getPosition().x;
+            this.y = (entity.getTransform().getSize().height - Settings.TILE_HEIGHT * 2 ) / 2 + (int) entity.getTransform().getPosition().y;
         }
     }
 

@@ -1,9 +1,10 @@
 package cn.com.twoke.game.tank.scenes;
 
-import cn.com.twoke.game.tank.components.MouseMotionComponent;
-import cn.com.twoke.game.tank.components.RetangleComponent;
+import cn.com.twoke.game.tank.components.input.MouseMotionComponent;
+import cn.com.twoke.game.tank.components.common.RectangleComponent;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.entity.Transform;
+import com.sun.javafx.geom.Vec2f;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -12,10 +13,10 @@ public class TestScene extends Scene{
 
 
     public TestScene() {
-        GameEntity gameEntity = new GameEntity("这是一个方块", new Transform(new Point(0,0),
+        GameEntity gameEntity = new GameEntity("这是一个方块", new Transform(new Vec2f(0,0),
                 new Dimension(50, 50)
                 ));
-        RetangleComponent retangleComponent = new RetangleComponent(Color.RED);
+        RectangleComponent retangleComponent = new RectangleComponent(Color.RED);
 
         MouseMotionComponent mouseComponent = new MouseMotionComponent();
 

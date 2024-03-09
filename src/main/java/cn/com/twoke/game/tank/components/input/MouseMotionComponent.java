@@ -1,15 +1,16 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.input;
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class MouseMotionComponent  extends Component implements MouseListener, MouseMotionListener {
 
@@ -145,7 +146,7 @@ public class MouseMotionComponent  extends Component implements MouseListener, M
 
     public interface MouseHandler {
 
-        void handle(MouseEvent e, GameEntity entity);
+        void handle(MouseEvent e, GameEntity entity) ;
 
     }
 

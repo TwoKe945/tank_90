@@ -1,6 +1,7 @@
-package cn.com.twoke.game.tank.components;
+package cn.com.twoke.game.tank.components.common;
 
 
+import cn.com.twoke.game.tank.components.Component;
 import cn.com.twoke.game.tank.entity.GameEntity;
 import cn.com.twoke.game.tank.util.AssetPool;
 import cn.com.twoke.game.tank.util.ImageUtil;
@@ -15,7 +16,7 @@ public class SpriteComponent extends Component {
 
     public SpriteComponent(String spriteImagePath) {
         super();
-        spriteImage = ResourceLoader.loadImage(spriteImagePath);
+        spriteImage = AssetPool.loadTexture(spriteImagePath);
     }
 
     @Override
@@ -26,8 +27,8 @@ public class SpriteComponent extends Component {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(ImageUtil.rotateImage(spriteImage, entity.getTransform().getRotate()), entity.getTransform().getPosition().x,
-                entity.getTransform().getPosition().y,
+        g.drawImage(ImageUtil.rotateImage(spriteImage, entity.getTransform().getRotate()), (int)entity.getTransform().getPosition().x,
+                (int)entity.getTransform().getPosition().y,
                 entity.getTransform().getSize().width,
                 entity.getTransform().getSize().height, null);
     }
